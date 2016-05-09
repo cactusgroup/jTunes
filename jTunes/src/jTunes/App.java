@@ -9,7 +9,8 @@ public class App extends JPanel {
     private List<String> choices;
     
     public App() {
-        choices = OurDb.getGenres();
+        OurDb db = new OurDb();
+        choices = db.getGenres();
     }
     
     public static void main(String[] args) {
