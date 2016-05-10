@@ -16,48 +16,35 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
  
 /**
- * This is an example program that demonstrates how to play back an audio file
- * using the Clip in Java Sound API.
- * @author www.codejava.net
- *
+ * This code handles audio file playback and manages user control
+ * implementing LineListener to listen to events and act upon them.
  */
 
-public class AudioPlayerExample1 implements LineListener {
+public class AudioPlayer implements LineListener {
     
-    /**
-     * this flag indicates whether the playback completes or not.
-     */
-    private boolean playCompleted;
-    private boolean loop;
+
+    private boolean playCompleted; // Boolean to tell when playback has been completely finished (upon file close)
+    private boolean loop; // loop toggle
     private final long FIVESECONDS = 5000000;
     private final int START = 0;
-    private Clip audioClip;
-    private Scanner reader = new Scanner(System.in);
-    //private AudioPlayerExample1 player = new AudioPlayerExample1();
+    private Clip audioClip; // our clip object, plays the sound file
+    // \/ This is temporary. This SHOULD be removed when gui and event tracking is implemented.
+    private Scanner reader = new Scanner(System.in); 
      
-    /**
-     * Play a given audio file.
-     * @param audioFilePath Path of the audio file.
-     */
     
-    public void load(String songName){
+    public void load(String songName){ // Loads the sound file into Clip.
     	String audioFilePath = "./audiofiles/" + songName + ".wav";
     	File audioFile = new File(audioFilePath);
     	playCompleted = false;
     	loop = false;
     	try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
- 
             AudioFormat format = audioStream.getFormat();
- 
             DataLine.Info info = new DataLine.Info(Clip.class, format);
- 
-            audioClip = (Clip) AudioSystem.getLine(info);
- 
-            audioClip.addLineListener(this);
- 
-            audioClip.open(audioStream);
             
+            audioClip = (Clip) AudioSystem.getLine(info);
+            audioClip.addLineListener(this);
+            audioClip.open(audioStream);
             System.out.println("Song Loaded");
     	}
         catch (UnsupportedAudioFileException ex) {
@@ -76,66 +63,57 @@ public class AudioPlayerExample1 implements LineListener {
     	
 
 
-    private void play(){
-        //File audioFile = new File(audioFilePath);
+    private void play(){ // Function plays the sound file
     	if(audioClip.isOpen()  && !(audioClip.isActive())){
-    		if(audioClip.getMicrosecondPosition() == audioClip.getMicrosecondLength())
-    		{
+    		if(audioClip.getMicrosecondPosition() == audioClip.getMicrosecondLength()){
     			audioClip.setFramePosition(START);
     		}
 	        audioClip.start();
 	        System.out.println("Song Playing");
-	        
-	        /*while (!playCompleted) {
-	            // wait for the playback completes
-	            try {
-	                Thread.sleep(1000);
-	            } catch (InterruptedException ex) {
-	                ex.printStackTrace();
-	            }
-	        }
-	        
-	        audioClip.close();*/	        
     	} 
    }
    
-   public boolean isCompleted(){
+   public boolean isCompleted(){ // Returns bool if play is completed
 	   return playCompleted;
    }
     
-   private void end(){
+   private void end(){ // This closes the file and triggers playCompleted boolean
 	   audioClip.close();
 	   playCompleted = true;
 	   System.out.println("Song Ended");
    }
     
-   private void pause(){
+   private void pause(){ // This pauses the playback of the file. 
 	   if(audioClip.isActive()){
 		   System.out.println("Paused");
 		   audioClip.stop();
 	   }
    }
    
-   private void beginning(){
+   private void beginning(){ // |< goes to the beginning of the file to play.
 	   audioClip.setFramePosition(START);
 	   System.out.println("Song back to beginning");
    }
    
-   private void toggleLoop(){
+   private void toggleLoop(){ // toggles loop function
 	   loop = !loop;
    }
    
-   private void back5(){
+   private void back5(){ // Jumps back 5 seconds in playback
 	   if(audioClip.getMicrosecondPosition() > FIVESECONDS) audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() - FIVESECONDS);
 	   else audioClip.setMicrosecondPosition(START);
    }
    
-   private void fwd5(){
+   private void fwd5(){ // Jumps forward 5 seconds in playback
 	   if(audioClip.getMicrosecondPosition() < (audioClip.getMicrosecondLength()-FIVESECONDS)) audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() + FIVESECONDS);
 	   else audioClip.setMicrosecondPosition(audioClip.getMicrosecondLength());
    }
    
-    
+   public double getSongProgress(){ // Returns the current song progress as a double between 0.0 and 100.0.
+	   return ((double)audioClip.getMicrosecondPosition()/(double)audioClip.getMicrosecondLength())*100.0;
+   }
+   
+   
     /**
      * Listens to the START and STOP events of the audio line.
      */
@@ -150,7 +128,6 @@ public class AudioPlayerExample1 implements LineListener {
         	System.out.println("Playback stopped");
         	if (audioClip.getMicrosecondLength() == audioClip.getMicrosecondPosition()){
         		if(loop) {
-        			beginning();
         			play();
         		}
         	}  
@@ -160,7 +137,9 @@ public class AudioPlayerExample1 implements LineListener {
         }
     }
     
-    public void menu(){
+    
+    
+    public void menu(){ // TEMPORARY FUNCTION TO TEST PLAYBACK FUNCTIONS. 
     	
     		int n = 0;
 
@@ -192,12 +171,7 @@ public class AudioPlayerExample1 implements LineListener {
 	    	default: break;
     	}
     }
-    
- 
 }
     
     
     
-            
-             
- 
