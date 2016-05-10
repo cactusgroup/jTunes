@@ -6,7 +6,7 @@ import net.codejava.sound.*;
 public class Driver {
 public static void main(String[] args) {
 	
-	AudioPlayerExample1 a = new AudioPlayerExample1();
+	AudioPlayer a = new AudioPlayer();
 	
 	String song = "test2";
 	

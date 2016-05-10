@@ -20,7 +20,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * implementing LineListener to listen to events and act upon them.
  */
 
-public class AudioPlayerExample1 implements LineListener {
+public class AudioPlayer implements LineListener {
     
 
     private boolean playCompleted; // Boolean to tell when playback has been completely finished (upon file close)
@@ -175,6 +175,3 @@ public class AudioPlayerExample1 implements LineListener {
     
     
     
-            
-             
- 
