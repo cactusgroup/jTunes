@@ -12,6 +12,7 @@ public static void main(String[] args) {
 	
 	a.load(song);
 	while(!a.isCompleted()){
+	System.out.println(a.getSongProgress());
 	a.menu();
 	}
 	
