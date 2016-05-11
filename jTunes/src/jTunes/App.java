@@ -6,7 +6,7 @@ import java.awt.*;
 import java.io.IOException;
 
 import jTunes.gui.*;
-//Test
+//Tests
 public class App extends JPanel {
     private static final String VersionID = "1.01";
     
