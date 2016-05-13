@@ -2,14 +2,16 @@ drop database if exists finalAssignment;
 create database finalAssignment;
 use finalAssignment;
 
--- table for storing type of genre
+-- table for storing type of genre;
+
 CREATE TABLE Genre(
 	genreID int NOT NULL AUTO_INCREMENT,
 	genreName VARCHAR(50),
 	CONSTRAINT genre_pk PRIMARY KEY(genreID)
 );
 
--- table for storing artist name, genre
+-- table for storing artist name, genre;
+
 CREATE TABLE Artist(
 	artistID int NOT NULL AUTO_INCREMENT,
 	artistName VARCHAR(50),
@@ -19,7 +21,8 @@ CREATE TABLE Artist(
 	REFERENCES Genre(genreID)
 );
 
--- table for storing album name, year, genre and artist
+-- table for storing album name, year, genre and artist;
+
 CREATE TABLE Album(
 	albumID int NOT NULL AUTO_INCREMENT,
 	albumName VARCHAR(50),
@@ -33,7 +36,8 @@ CREATE TABLE Album(
 	REFERENCES Genre(genreID)
 );
 
--- insert data into songs table
+-- insert data into songs table;
+
 CREATE TABLE Songs(
 	songID int NOT NULL AUTO_INCREMENT,
 	songTitle VARCHAR(50),
@@ -44,19 +48,22 @@ CREATE TABLE Songs(
     REFERENCES Album(albumID)
    );
 
--- insert data into the genre table
+-- insert data into the genre table;
+
 INSERT INTO Genre(genreName) VALUES('Hip-hop'),
 ('R&B'),
 ('Pop'),
 ('Rock');
 
--- insert data into the artist table
+-- insert data into the artist table;
+
 INSERT INTO Artist(artistName, genreID) VALUES('Prince', (SELECT genreID FROM Genre WHERE genreName = 'Pop')),
 ('Drake', (SELECT genreID FROM Genre WHERE genreName = 'R&B')),
 ('Kanye West', (SELECT genreID FROM Genre WHERE genreName = 'Hip-hop')),
 ('Radiohead', (SELECT genreID FROM Genre WHERE genreName = 'Rock'));
 
--- insert data into the album table
+-- insert data into the album table;
+
 INSERT INTO Album(albumName, albumYear, artistID, genreID) VALUES ('1999', 1982, 
 (SELECT artistID FROM Artist WHERE artistName = "Prince"), (SELECT genreID FROM Artist WHERE artistName = "Prince")),
 ('Dirty Mind', 1980, 
@@ -68,7 +75,8 @@ INSERT INTO Album(albumName, albumYear, artistID, genreID) VALUES ('1999', 1982,
 ('Pablo Honey', 1993, 
 (SELECT artistID FROM Artist WHERE artistName = "Radiohead"), (SELECT genreID FROM Artist WHERE artistName = "Radiohead"));
 
--- insert data into songs
+-- insert data into songs;
+
 INSERT INTO Songs(songTitle,albumID) VALUES ('1999', (SELECT albumID FROM Album WHERE albumName = '1999')),
 ('Do It All Night', (SELECT albumID FROM Album WHERE albumName = 'Dirty Mind')),
 ('Blame Game', (SELECT albumID FROM Album WHERE albumName = 'My Beautiful Dark Twisted Fantasy')),
