@@ -5,9 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Menu {
-	private final String DATABASE_URL = "jdbc:mysql://localhost:3306/finalAssignment?autoReconnect=true&useSSL=false";
-	private final String USER = "root";
-	private final String PASSWORD = "Songs";
 	private String query;
 	private Connection connection;
 	private Statement statement;
@@ -15,7 +12,7 @@ public class Menu {
 	private int genreID;
 	public Menu() {
 		try {
-			connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+			connection = DatabaseSetup.getConnection();
 			statement = connection.createStatement();
 			query = "SELECT genreName FROM Genre;";
 			resultSet = statement.executeQuery(query);
