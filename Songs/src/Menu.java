@@ -4,13 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+
 public class Menu {
 	private String query;
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;
 	private int genreID;
-	public Menu() {
+	public Menu() throws SQLException {
 		try {
 			connection = DatabaseSetup.getConnection();
 			statement = connection.createStatement();
@@ -19,7 +21,8 @@ public class Menu {
 			while(resultSet.next()) {
 				System.out.println(resultSet.getString("genreName"));
 			}
-		} catch (SQLException e) {
+		} catch (MySQLSyntaxErrorException e) {
+			System.out.println("ERROR IN SQL DB, DATABASE CORRUPT");
 			e.printStackTrace();
 		}
 	}
