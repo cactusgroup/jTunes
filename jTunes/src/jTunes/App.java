@@ -16,12 +16,7 @@ public class App extends JPanel {
         setPreferredSize(new Dimension(350, 600));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
-        try {
-            add(new Header("Genre"));
-        } catch (IOException e) {
-            System.err.println("Failed to add Header.");
-            e.printStackTrace();
-        }
+        add(new Header("Genre"));
         add(new Body());
         add(new Footer("Hello"));
 //        
@@ -76,6 +71,7 @@ public class App extends JPanel {
                 f.add(new App());
                 f.setPreferredSize(new Dimension(350, 600));
                 f.pack();
+                f.setResizable(false);
                 f.setVisible(true);
             }
         });

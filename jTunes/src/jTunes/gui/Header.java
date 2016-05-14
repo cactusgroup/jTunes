@@ -2,6 +2,7 @@ package jTunes.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 
@@ -16,34 +17,35 @@ import javax.swing.border.EmptyBorder;
  * 
  */
 public class Header extends JPanel {
-    private Image i;
+    private String menuIconPath = "../resources/menuicon.png";
+    private String searchIconPath = "../resources/searchicon.png";
+    private ImageIcon menuIcon;
+    private ImageIcon searchIcon;
     private String title;
     
-    public Header(String title) throws IOException {
+    public Header(String title) {
         this(title, 350);
     }
-    public Header(String t, int width) throws IOException {
+    public Header(String t, int width) {
         title = t;
         
+        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(width, 50));
         setBackground(ColorConstants.MINT_GREEN);
         
-        setLayout(new BorderLayout());
-        add(new JLabel("Q"), BorderLayout.LINE_END);
-        add(new JLabel("Albums"), BorderLayout.CENTER);
+        CustomButton menuButton = new CustomButton(ColorConstants.MINT_GREEN,
+                                                   menuIconPath,
+                                                   "\u2261",
+                                                   60);
+        add(menuButton, BorderLayout.LINE_START);
         
-//        try {
-//            i = ImageIO.read(getClass().getResource("resources/images/menuicon.png"));
-//        } catch (IOException e) {
-//            System.err.println("Menu icon not found.");
-//            e.printStackTrace();
-//            throw e;
-//        }
-//        JPanel iconPanel = new JPanel(new BorderLayout());
-//        iconPanel.setBorder(new EmptyBorder(10,10,10,10));
-//        iconPanel.add(new JLabel(new ImageIcon(i)), BorderLayout.CENTER);
-//        add(iconPanel, BorderLayout.LINE_START);
-        add(new JLabel("="), BorderLayout.LINE_START);
+        add(new JLabel(t), BorderLayout.CENTER);
+        
+        CustomButton searchButton = new CustomButton(ColorConstants.MINT_GREEN,
+                                                     searchIconPath,
+                                                     "Q",
+                                                     30);
+        add(searchButton, BorderLayout.LINE_END);
     }
     
     public void setTitle(String t) {
