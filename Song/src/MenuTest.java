@@ -33,7 +33,7 @@ public class MenuTest {
 		System.out.print("Please type the song name: ");
 		
 		input = scanner.nextLine();
-		// Invoke methods that will play the song
+		menu.activateSong(input);
 		scanner.close();
 	}	
 }

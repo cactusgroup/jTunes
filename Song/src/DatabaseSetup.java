@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class DatabaseSetup  {
  
     private static final String SETUP_URL = "jdbc:mysql://localhost:3306?autoReconnect=true&useSSL=false";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/finalassignment?autoReconnect=true&useSSL=false";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/finalAssignment?autoReconnect=true&useSSL=false";
     private static final String USER = "root";
     private static final String PASSWORD = "";
  
@@ -23,23 +23,23 @@ public class DatabaseSetup  {
        
         catch(SQLException e) {
         	System.out.println("Database missing, generating new database...");
-        	DatabaseSetup.setupDatabase();
+        	setupDatabase();
         	System.out.println("Database generated");
         	return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
         	}
     }
     
-    public static void closeConnection(Connection c) throws SQLException{
+    private static void closeConnection(Connection c) throws SQLException{
     	c.close();
     }
  
-    public static void setupDatabase() throws SQLException{
+    private static void setupDatabase() throws SQLException{
         String s  = new String();
         StringBuffer sb = new StringBuffer();
  
         try
         {
-            FileReader fr = new FileReader(new File("./bin/finalAssignment.sql"));
+            FileReader fr = new FileReader(new File("./Library/finalAssignment.sql"));
  
             BufferedReader br = new BufferedReader(fr);
  
@@ -64,7 +64,7 @@ public class DatabaseSetup  {
                     System.out.println(">>"+inst[i]);
                 }
             }
-           DatabaseSetup.closeConnection(c);
+           closeConnection(c);
    
         }
         catch(Exception e)

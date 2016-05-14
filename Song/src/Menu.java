@@ -1,10 +1,11 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+
+import net.codejava.sound.AudioPlayer;
 
 public class Menu {
 	private String query;
@@ -12,6 +13,7 @@ public class Menu {
 	private Statement statement;
 	private ResultSet resultSet;
 	private int genreID;
+
 	public Menu() throws SQLException {
 		try {
 			connection = DatabaseSetup.getConnection();
@@ -40,7 +42,7 @@ public class Menu {
 	}
 	private void printArtistsList(int genreID) {
 		try {
-			query = "SELECT artistName FROM Artist WHERE genreID = " + genreID;
+			query = "SELECT artistName FROM Artist WHERE genreID = " + genreID + ";";
 			resultSet = statement.executeQuery(query);
 			while(resultSet.next()) {
 				System.out.println(resultSet.getString("artistName"));
@@ -99,13 +101,13 @@ public class Menu {
 			e.printStackTrace();
 		}	
 	}
-	/* Just missing code that will play song
-	void playSong(Song) {
-		audio.play(Song);
+	public void activateSong(String song) {
+		AudioPlayer audioPlayer = new AudioPlayer();
+		audioPlayer.load(song);
+		while(!audioPlayer.isCompleted()) {
+			// System.out.println(audioPlayer.getSongProgress()); // not necessary but can be useful for GUI
+			audioPlayer.menu();
+		}
 	}
-	void stopSong() {
-		audio.stop(Song);
-	}
-	*/
 
 }
