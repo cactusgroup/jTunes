@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -19,9 +20,7 @@ import javax.swing.border.EmptyBorder;
 public class Header extends JPanel {
     private String menuIconPath = "../resources/menuicon.png";
     private String searchIconPath = "../resources/searchicon.png";
-    private ImageIcon menuIcon;
-    private ImageIcon searchIcon;
-    private String title;
+    private String title = "[Filter]";
     
     public Header(String title) {
         this(title, 350);
@@ -37,6 +36,9 @@ public class Header extends JPanel {
                                                    menuIconPath,
                                                    "\u2261",
                                                    60);
+        menuButton.addMouseListener(new MouseAdapter() {
+//            public void mousePressed
+        });
         add(menuButton, BorderLayout.LINE_START);
         
         add(new JLabel(t), BorderLayout.CENTER);

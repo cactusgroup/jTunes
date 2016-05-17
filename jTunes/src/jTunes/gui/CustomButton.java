@@ -3,7 +3,6 @@ package jTunes.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
