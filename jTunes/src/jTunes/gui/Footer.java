@@ -3,11 +3,12 @@ package jTunes.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.*;
 
 /* 50 px high
  * +------------------------------+
@@ -42,19 +43,20 @@ public class Footer extends JPanel {
                                                       forwardIconPath,
                                                       ">>",
                                                       30);
-        backButton.setBorder(new EtchedBorder(1));
-        playButton.setBorder(new EtchedBorder(1));
-        forwardButton.setBorder(new EtchedBorder(1));
+        Insets insets = new Insets(0, 1, 0, 1);
+        backButton.setBorder(new EmptyBorder(insets));
+        playButton.setBorder(new EmptyBorder(insets));
+        forwardButton.setBorder(new EmptyBorder(insets));
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 JOptionPane.showConfirmDialog(null, "test");
             }
         });
+        
         buttons.add(backButton, BorderLayout.LINE_START);
         buttons.add(playButton, BorderLayout.CENTER);
         buttons.add(forwardButton, BorderLayout.LINE_END);
-        
         add(buttons, BorderLayout.LINE_START);
         
         message = new JLabel("Playing: " + currentSong);

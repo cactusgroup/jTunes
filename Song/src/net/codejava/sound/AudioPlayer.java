@@ -49,16 +49,16 @@ public class AudioPlayer implements LineListener {
             System.out.println("Song Loaded");
     	}
         catch (UnsupportedAudioFileException ex) {
-        System.out.println("The specified audio file is not supported.");
-        ex.printStackTrace();
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
         }
     	catch (LineUnavailableException ex) {
-        System.out.println("Audio line for playing back is unavailable.");
-        ex.printStackTrace();
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
     	}
     	catch (IOException ex) {
-        System.out.println("Error playing the audio file.");
-        ex.printStackTrace();
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
     	}
     }
     	

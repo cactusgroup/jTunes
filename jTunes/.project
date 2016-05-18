@@ -3,6 +3,8 @@
 	<name>jTunes</name>
 	<comment></comment>
 	<projects>
+		<project>Songs</project>
+		<project>test</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
