@@ -6,18 +6,19 @@ import java.awt.*;
 import java.io.IOException;
 
 import jTunes.gui.*;
-//Tests
+
 public class App extends JPanel {
     private static final String VersionID = "1.01";
     
-    private List<String> choices;
-    
     public App() {
-        setPreferredSize(new Dimension(350, 600));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setPreferredSize(new Dimension(350, 600));
+        setBackground(Color.LIGHT_GRAY);
         
-        add(new Header("Genre"));
-        add(new Body());
+        Header h = new Header("Genre");
+        
+        add(h);
+        add(new MenuPanel());
         add(new Footer("Hello"));
     }
     
