@@ -3,6 +3,7 @@ package jTunes.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -14,10 +15,13 @@ import javax.swing.border.EmptyBorder;
 public class CustomButton extends JPanel {
     private ImageIcon myIcon;
     private JLabel myLabel;
-    public CustomButton(Color bg, String iconPath, String substitute, int fontSize) {
+    public CustomButton(String iconPath, String substitute, int fontSize, Color bg) {
+        this(iconPath, substitute, fontSize, bg, new Insets(10,10,10,10));
+    }
+    public CustomButton(String iconPath, String substitute, int fontSize, Color bg, Insets insets) {
         setLayout(new BorderLayout());
         setBackground(bg);
-        setBorder(new EmptyBorder(10,10,10,10));
+        setBorder(new EmptyBorder(insets));
         
         try {
             myIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
@@ -48,5 +52,6 @@ public class CustomButton extends JPanel {
             myLabel.setFont(new Font("Sans-Serif", Font.BOLD, fontSize));
         }
         add(myLabel, BorderLayout.CENTER);
+        revalidate();
     }
 }

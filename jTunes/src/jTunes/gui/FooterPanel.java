@@ -16,43 +16,47 @@ import javax.swing.border.*;
  * +------------------------------+
  */
 
-public class Footer extends JPanel {
+public class FooterPanel extends JPanel {
     private String currentSong = "[song title]";
     private String forwardIconPath = "../resources/forwardicon.png";
     private String backIconPath = "../resources/backicon.png";
     
     private JLabel message;
     
-    public Footer(String currentSong) {
+    public FooterPanel(String currentSong) {
         this(currentSong, 350);
     }
-    public Footer(String cS, int width) {
+    public FooterPanel(String cS, int width) {
+        // initialize current song
         currentSong = cS;
         
+        // set up layout, size, and background color
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(width, 50));
         setBackground(Color.WHITE);
         
+        // initialize playback controls
         JPanel buttons = new JPanel(new BorderLayout());
-        CustomButton backButton = new CustomButton(Color.WHITE,
-                                                   backIconPath,
-                                                   "<<",
-                                                   30);
-        CustomButton playButton = new PlayButton();
-        CustomButton forwardButton = new CustomButton(Color.WHITE,
-                                                      forwardIconPath,
-                                                      ">>",
-                                                      30);
-        Insets insets = new Insets(0, 1, 0, 1);
-        backButton.setBorder(new EmptyBorder(insets));
-        playButton.setBorder(new EmptyBorder(insets));
-        forwardButton.setBorder(new EmptyBorder(insets));
-        playButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                JOptionPane.showConfirmDialog(null, "test");
-            }
-        });
+            Insets insets = new Insets(0, 1, 0, 1);
+            CustomButton backButton = new CustomButton(
+                    backIconPath,
+                    "<<",
+                    30,
+                    Color.WHITE,
+                    insets);
+            PlayButton playButton = new PlayButton();
+            CustomButton forwardButton = new CustomButton(
+                    forwardIconPath,
+                    ">>",
+                    30,
+                    Color.WHITE,
+                    insets);
+            playButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    playButton.toggleIcon();
+                }
+            });
         
         buttons.add(backButton, BorderLayout.LINE_START);
         buttons.add(playButton, BorderLayout.CENTER);
