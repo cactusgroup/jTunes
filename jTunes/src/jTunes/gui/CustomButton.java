@@ -24,7 +24,8 @@ public class CustomButton extends JPanel {
         setBorder(new EmptyBorder(insets));
         
         try {
-            myIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
+            myIcon = new ImageIcon(ImageIO.read(
+                    getClass().getClassLoader().getResource(iconPath)));
             myLabel = new JLabel(myIcon);
         } catch (IOException | IllegalArgumentException e) {
             int idx = iconPath.lastIndexOf('/');

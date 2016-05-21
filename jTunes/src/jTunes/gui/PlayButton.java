@@ -3,13 +3,13 @@ package jTunes.gui;
 import java.awt.Color;
 import java.awt.Insets;
 
+import jTunes.Resources;
+
 public class PlayButton extends CustomButton {
-    private static final String playIconPath = "resources/playicon.png";
-    private static final String pauseIconPath = "resources/pauseicon.png";
     private boolean playing;
     
     public PlayButton() {
-        super(playIconPath,
+        super(Resources.playIcon,
               ">",
               40,
               Color.WHITE,
@@ -20,9 +20,9 @@ public class PlayButton extends CustomButton {
     
     public void toggleIcon() {
         if (!playing) {                 // that is, Button clicked to play song
-            setIcon(pauseIconPath, "||", 40);
+            setIcon(Resources.pauseIcon, "||", 40);
         } else {                        // that is, Button clicked to pause song
-            setIcon(playIconPath,  ">", 40);
+            setIcon(Resources.playIcon,  ">", 40);
         }
         playing = !playing;
     }

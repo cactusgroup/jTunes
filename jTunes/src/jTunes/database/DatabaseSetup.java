@@ -1,5 +1,7 @@
 package jTunes.database;
 
+import jTunes.Resources;
+
 import java.io.BufferedReader;
 
 import java.io.File;
@@ -13,7 +15,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
 
- 
 public class DatabaseSetup  {
  
     private static final String SETUP_URL = "jdbc:mysql://localhost:3306?autoReconnect=true&useSSL=false";
@@ -39,7 +40,8 @@ public class DatabaseSetup  {
         String s = new String();
         StringBuffer sb = new StringBuffer();
         
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("../resources/finalAssignment.sql")))) {
+        DatabaseSetup.class.getClassLoader().getResource(Resources.sqlFile);
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("../resources/sql/finalAssignment.sql")))) {
             while((s = br.readLine()) != null) {
                 sb.append(s);
             }
