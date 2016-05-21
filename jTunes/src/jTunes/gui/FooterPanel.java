@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import jTunes.Resources;
+
 /* 50 px high
  * +------------------------------+
  * | > Playing: [song title]      | 
@@ -18,8 +20,6 @@ import javax.swing.border.*;
 
 public class FooterPanel extends JPanel {
     private String currentSong = "[song title]";
-    private String forwardIconPath = "../resources/forwardicon.png";
-    private String backIconPath = "../resources/backicon.png";
     
     private JLabel message;
     
@@ -37,17 +37,18 @@ public class FooterPanel extends JPanel {
         
         // initialize playback controls
         JPanel buttons = new JPanel(new BorderLayout());
+        buttons.setBorder(new MatteBorder(0, 2, 0, 2, Color.WHITE));
             Insets insets = new Insets(0, 1, 0, 1);
             CustomButton backButton = new CustomButton(
-                    backIconPath,
-                    "<<",
+                    Resources.backIcon,
+                    "\u00ab",
                     30,
                     Color.WHITE,
                     insets);
             PlayButton playButton = new PlayButton();
             CustomButton forwardButton = new CustomButton(
-                    forwardIconPath,
-                    ">>",
+                    Resources.forwardIcon,
+                    "\u00bb",
                     30,
                     Color.WHITE,
                     insets);

@@ -7,6 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
+import jTunes.Resources;
+
 /* 50 px high
  * +------------------------------+
  * | = [Albums]                 Q |
@@ -14,8 +16,6 @@ import javax.swing.*;
  * 
  */
 public class HeaderPanel extends JPanel {
-    private String menuIconPath = "../resources/menuicon.png";
-    private String searchIconPath = "../resources/searchicon.png";
     private JLabel title;
     private boolean showingSearch = false;
     
@@ -35,7 +35,7 @@ public class HeaderPanel extends JPanel {
         // With attached MouseListener
         // LEFT (LINE_START)
         CustomButton menuButton = new CustomButton(
-                menuIconPath,
+                Resources.menuIcon,
                 "\u2261",
                 60,
                 ColorConstants.MINT_GREEN);
@@ -67,7 +67,7 @@ public class HeaderPanel extends JPanel {
         // Attached MouseListener
         // RIGHT (LINE_END)
         CustomButton searchButton = new CustomButton(
-                searchIconPath,
+                Resources.searchIcon,
                 "Q",
                 30,
                 ColorConstants.MINT_GREEN);

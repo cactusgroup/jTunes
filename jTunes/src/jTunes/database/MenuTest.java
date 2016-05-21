@@ -25,16 +25,17 @@ public class MenuTest {
         menu.getArtistsInGenre(input);
         System.out.println();
         
+        String genre = input;
         System.out.print(select + "artist (type its name): ");
         input = scanner.nextLine();
         System.out.println(underline);
-        menu.getAlbumsByArtist(input);
+        menu.getAlbumsByArtistInGenre(input, genre);
         System.out.println();
         
         System.out.print(select + "album (type its name): ");
         input = scanner.nextLine();
         System.out.println(underline);
-        menu.getSongsInAlbum(input);
+        menu.getSongsInAlbumByArtistInGenre(input);
         System.out.println();
         
         System.out.print("Please select a song: ");

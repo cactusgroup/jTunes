@@ -1,15 +1,16 @@
 package jTunes.database;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.hsqldb.result.Result;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
@@ -21,6 +22,7 @@ public class Menu {
     private String query;
     private Connection connection;
     private Statement statement;
+    private PreparedStatement pStatement;
     private ResultSet resultSet;
     
     private int genreID;                        // require for a compound query
@@ -65,25 +67,74 @@ public class Menu {
             try { resultSet.close(); } catch (Exception e) {}
             try { statement.close(); } catch (Exception e) {}
         }
+        
         return list;
     }
     
-    public void getArtistsInGenre(String genreName) {
+    public List<String> getArtistsInGenre(String genreName) {
+        List<String> list = new ArrayList<>(5);
+        
         try {
-            query = "SELECT DISTINCT artistName FROM Artist "
+            query = "SELECT artistName FROM Artist "
                   + "WHERE genreID = (SELECT genreID FROM Genre "
-                                   + "WHERE genreName = '" + genreName + "');";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
+                                   + "WHERE genreName = ?);";
+            pStatement = connection.prepareStatement(query);
+            pStatement.setString(1, genreName);
+            resultSet = pStatement.executeQuery();
             
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("artistName"));
+                String column = resultSet.getString("artistName");
+                list.add(column);
+                System.out.println(column);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try { resultSet.close(); } catch (Exception e) {}
-            try { statement.close(); } catch (Exception e) {}
+            try { pStatement.close(); } catch (Exception e) {}
+        }
+        
+        return list;
+    }
+    public void getAlbumsByArtistInGenre(String artistName, String genreName) {
+        try {
+            query = "SElECT albumName FROM Album "
+                  + "WHERE artistID = (SELECT artistID FROM Artist "
+                                    + "WHERE  artistName = ?) "
+                  + "  AND  genreID = (SELECT genreID FROM Genre "
+                                    + "WHERE  genreName = ?);";
+            pStatement = connection.prepareStatement(query);
+            pStatement.setString(1, artistName);
+            pStatement.setString(2, genreName);
+            resultSet = pStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("albumName"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { resultSet.close(); } catch (Exception e) {}
+            try { pStatement.close(); } catch (Exception e) {}
+        }
+    }
+    public void getSongsInAlbumByArtistInGenre(String albumName) {
+        try {
+            query = "SELECT songTitle FROM Songs "
+                  + "WHERE  albumID = (SELECT albumID FROM Album "
+                                    + "WHERE  albumName = ?);";
+            pStatement = connection.prepareStatement(query);
+            pStatement.setString(1, albumName);
+            resultSet = pStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("songTitle"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { resultSet.close(); } catch (Exception e) {}
+            try { pStatement.close(); } catch (Exception e) {}
         }
     }
     
@@ -111,19 +162,19 @@ public class Menu {
         }
     }
 
-    public void getAlbumsByArtist(String artistName) {
+    public void getAlbums(String artistName) {
         int artistID = 0;
         try {
             query = "SELECT artistID FROM Artist WHERE artistName = '" + artistName + "';";
             resultSet = statement.executeQuery(query);
             resultSet.next();
             artistID = resultSet.getInt("artistID");
-            printAlbumsByArtist(artistID);
+            printAlbums(artistID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    private void printAlbumsByArtist(int artistID) {
+    private void printAlbums(int artistID) {
         try {
             query = "SELECT albumName FROM Album "
                     + "WHERE artistID = " + artistID 
@@ -137,19 +188,19 @@ public class Menu {
         }    
     }
     
-    public void getSongsInAlbum(String albumName) {
+    public void getSongs(String albumName) {
         int albumID = 0;
         try {
             query = "SELECT albumID FROM Album WHERE albumName = '" + albumName + "';";
             resultSet = statement.executeQuery(query);
             resultSet.next();
             albumID = resultSet.getInt("albumID");
-            printSongsInAlbum(albumID);
+            printSongs(albumID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    private void printSongsInAlbum(int albumID) {
+    private void printSongs(int albumID) {
         try {
             query = "SELECT songTitle FROM Songs WHERE songID = " + albumID + ";";
             resultSet = statement.executeQuery(query);

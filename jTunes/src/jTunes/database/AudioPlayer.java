@@ -4,9 +4,11 @@
 
 package jTunes.database;
 
+import jTunes.Resources;
  
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -38,8 +40,9 @@ public class AudioPlayer implements LineListener {
      
     
     public void load(String songName){ // Loads the sound file into Clip.
-        String audioFilePath = "./audiofiles/" + songName + ".wav";
-        File audioFile = new File(audioFilePath);
+        String audioFilePath = Resources.audioRoot + songName + ".wav";
+        URL audioFile = getClass().getClassLoader().getResource(audioFilePath);
+//        File audioFile = new File(audioFilePath);
         playCompleted = false;
         loop = false;
         try {
