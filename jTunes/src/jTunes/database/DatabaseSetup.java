@@ -41,7 +41,7 @@ public class DatabaseSetup  {
         StringBuffer sb = new StringBuffer();
         
         DatabaseSetup.class.getClassLoader().getResource(Resources.sqlFile);
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("../resources/sql/finalAssignment.sql")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/resources/sql/finalAssignment.sql")))) {
             while((s = br.readLine()) != null) {
                 sb.append(s);
             }
