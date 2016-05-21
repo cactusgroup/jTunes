@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Insets;
 
 public class PlayButton extends CustomButton {
-    private static final String playIconPath = "../resources/playicon.png";
-    private static final String pauseIconPath = "../resources/pauseicon.png";
+    private static final String playIconPath = "resources/playicon.png";
+    private static final String pauseIconPath = "resources/pauseicon.png";
     private boolean playing;
     
     public PlayButton() {
