@@ -32,11 +32,11 @@ public class App extends JPanel {
         
         // initialize our content panels
         // TODO: Implement these panels
-//        menu = new MenuPanel();
+        menu = new MenuPanel();
         results = new SearchResultPanel();
-//        suggestions = new SearchSuggestionPanel();
+        suggestions = new SearchSuggestionPanel();
         
-//        add(h);
+        add(h);
         add(b);
         add(f);
     }
