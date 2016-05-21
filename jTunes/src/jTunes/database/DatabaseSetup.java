@@ -1,3 +1,4 @@
+package jTunes.database;
 
 import java.io.BufferedReader;
 
@@ -5,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -35,8 +38,8 @@ public class DatabaseSetup  {
     private static void generateDatabase() {
         String s = new String();
         StringBuffer sb = new StringBuffer();
- 
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("./Library/finalAssignment.sql")))) {
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("../resources/finalAssignment.sql")))) {
             while((s = br.readLine()) != null) {
                 sb.append(s);
             }

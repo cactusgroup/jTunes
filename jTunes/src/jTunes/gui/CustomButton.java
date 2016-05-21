@@ -41,7 +41,8 @@ public class CustomButton extends JPanel {
         removeAll();
         
         try {
-            myIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
+            myIcon = new ImageIcon(ImageIO.read(
+                    getClass().getClassLoader().getResource(iconPath)));
             myLabel = new JLabel(myIcon);
         } catch (IOException | IllegalArgumentException e) {
             int idx = iconPath.lastIndexOf('/');
