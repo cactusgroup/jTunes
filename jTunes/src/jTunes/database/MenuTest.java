@@ -28,7 +28,6 @@ public class MenuTest {
         	        
         	        System.out.print(select + "genre (type its name) or type 'quit' to exit: ");
         	        input = scanner.nextLine();
-        	        System.out.println(input);
         	        if(input.contentEquals("quit") || input.contentEquals("Quit")) {
         	        	exitBool = true;
         	        	break;
@@ -41,17 +40,16 @@ public class MenuTest {
         	        else break;
         		
         	}
-        if (exitBool) break; // Quiting the application if exitBool is triggered.
+        if (exitBool) break; // Quitting the application if exitBool is triggered.
         savedInput = input;
         savedGenre = savedInput;
         
         while(true){
         	 System.out.println();
-             String genre = savedInput;
              System.out.print(select + "artist (type its name): ");
              input = scanner.nextLine();
              System.out.println(underline);
-             if(menu.getAlbumsByArtistInGenre(input, genre).isEmpty()){
+             if(menu.getAlbumsByArtistInGenre(input, savedGenre).isEmpty()){
             		System.out.println("Invalid Choice.");
             		System.out.println(underline);
             		menu.getArtistsInGenre(savedInput);
@@ -85,13 +83,17 @@ public class MenuTest {
 	        	break;
 	        }
         	System.out.println(underline);
+        	/*
         	if (!menu.activateSong(input)){
         		System.out.println(underline);
         		menu.getSongsInAlbumByArtistInGenre(savedInput);
         		continue;
         	}
         	else break;
-        	}
+        	*/
+        	menu.activateSong(input);
+        	break;
+        	}        	
         }
         
         System.out.println("Exiting, goodbye!");

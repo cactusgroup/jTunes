@@ -17,4 +17,7 @@ public class Resources {
     
     // audio root (folder) path
     public static final String audioRoot     = "resources/tracks/";
+    
+    // mp3 audio path
+    public static final String MP3audio		= "resources/mp3tracks/";
 }
