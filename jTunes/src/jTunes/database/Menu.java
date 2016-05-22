@@ -24,9 +24,9 @@ public class Menu {
     private Statement statement;
     private PreparedStatement pStatement;
     private ResultSet resultSet;
-    private AudioPlayer audioPlayer = new AudioPlayer();
+    // private AudioPlayer audioPlayer = new AudioPlayer();
     
-    private int genreID;                        // require for a compound query
+    //private int genreID;        // require for a compound query
     
     private static final Map<String, String> QUERIES;
     static {
@@ -143,7 +143,7 @@ public class Menu {
         }
         return list;
     }
-    
+    /*
     public void getArtists(String genreName) {
         try {
             query = "SELECT genreID FROM Genre WHERE genreName = '" + genreName + "';";
@@ -217,13 +217,16 @@ public class Menu {
             e.printStackTrace();
         }    
     }
-    
-    public boolean activateSong(String song) {
-        if(!audioPlayer.load(song)) return false;
+    */
+    public void activateSong(String song) {
+        /*
+    	if(!audioPlayer.load(song)) return false;
         while(!audioPlayer.isCompleted()) {
             // System.out.println(audioPlayer.getSongProgress()); // not necessary but can be useful for GUI
             audioPlayer.menu();
         }
         return true;
+        */
+    	MP3Player.launch(MP3Player.class, song);
     }
 }
