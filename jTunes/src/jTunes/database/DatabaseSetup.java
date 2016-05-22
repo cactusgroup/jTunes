@@ -32,7 +32,7 @@ public class DatabaseSetup  {
         }
     }
     
-    private static void closeConnection(Connection c) throws SQLException {
+    public static void closeConnection(Connection c) throws SQLException {
         c.close();
     }
  

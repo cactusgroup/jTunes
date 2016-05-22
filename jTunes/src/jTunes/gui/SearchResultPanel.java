@@ -5,7 +5,6 @@ import jTunes.QueryResponse;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -13,12 +12,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+@SuppressWarnings("serial")
 public class SearchResultPanel extends JPanel {
-    private List<SearchResult> results;
     private JPanel resultsPane;
     
     public SearchResultPanel() {
-        results = new ArrayList<>(15);
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(350, 500));

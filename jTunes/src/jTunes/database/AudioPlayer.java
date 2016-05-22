@@ -90,8 +90,23 @@ public class AudioPlayer implements LineListener {
         return playCompleted;
     }
     
+    public boolean isPlaying(){
+        // no audio loaded
+        if (audioClip == null) return false;
+        
+        // active state === "playing"
+    	if (audioClip.isActive()) return true;
+    	
+    	// not in active state
+    	return false;
+    }
+    
     public void end() { // This closes the file and triggers playCompleted boolean
-        audioClip.close();
+        if (audioClip != null) { 
+            if(audioClip.isActive())
+                audioClip.stop();
+            audioClip.close();
+        }
         playCompleted = true;
         System.out.println("Song Ended");
     }

@@ -3,19 +3,11 @@ package jTunes.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.basic.BasicSliderUI;
-
 import jTunes.Resources;
 import jTunes.database.AudioPlayer;
 
@@ -25,6 +17,7 @@ import jTunes.database.AudioPlayer;
  * +------------------------------+
  */
 
+@SuppressWarnings("serial")
 public class FooterPanel extends JPanel {
     private AudioPlayer myPlayer;
     

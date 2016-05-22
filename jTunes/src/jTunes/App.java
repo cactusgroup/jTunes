@@ -3,7 +3,10 @@ package jTunes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,9 +86,48 @@ public class App {
                 f.add(generateUI());
                 f.pack();                               // fits f to its contents
                 f.setResizable(false);
+                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                
+                // shutdown support for Cmd-W
+                f.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyReleased(KeyEvent ke) {
+                        int kCode = ke.getKeyCode() ; 
+                        if (kCode == KeyEvent.VK_W && ke.isMetaDown())
+                            System.exit(0);
+//                        if (ke.getKeyCode() == KeyEvent.VK_F4 && ke.isAltDown())
+//                            System.exit(0);
+                    }
+                });
+                
+                // shutdown support for close button
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                
                 f.setVisible(true);
                 
                 query(ValueType.genre);
+            }
+        });
+        
+        final Thread mainThread = Thread.currentThread();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    menu.closeConnection();
+                    player.end();
+                    System.out.println("Resources closed.");
+                    mainThread.join();
+                    System.out.println("Shutting down.");
+                } catch (InterruptedException e) {
+                    System.out.println("We couldn't join our threads.");
+                    System.out.println("We were interrupted.");
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -162,7 +204,20 @@ public class App {
                 // (this is the base case)
                 System.out.println("----Song selected----");
                 resultsPanel.clearSearchResults();
-                player.load(response);
+                
+                // stop currently-playing / finished-playing song if needed
+                if(player.isPlaying()) {
+                    player.end();
+                    player.load(response);
+                    player.play();
+                }
+                else if(player.isCompleted()){
+                    player.end();
+                    player.load(response);
+                }
+                else
+                    player.load(response);
+                
                 System.out.println("----Song loaded----");
                 footerPanel.setCurrentSong(response);
             }
