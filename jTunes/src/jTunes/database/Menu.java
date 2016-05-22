@@ -17,9 +17,6 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import javafx.application.Application;
 
 public class Menu implements Runnable {
-    public enum ValueType {
-        genre, artist, album, song
-    }
     
     private volatile static MP3Player player = new MP3Player();
     private String query;
@@ -104,17 +101,17 @@ public class Menu implements Runnable {
         
         return list;
     }
-    public List<String> getAlbumsByArtistInGenre(String artistName, String genreName) {
+    public List<String> getAlbumsByArtistInGenre(String genreName, String artistName) {
     	List<String> list = new ArrayList<>(5);
         try {
             query = "SElECT albumName FROM Album "
-                  + "WHERE artistID = (SELECT artistID FROM Artist "
-                                    + "WHERE  artistName = ?) "
-                  + "  AND  genreID = (SELECT genreID FROM Genre "
-                                    + "WHERE  genreName = ?);";
+                  + "WHERE  genreID = (SELECT genreID FROM Genre "
+                                    + "WHERE  genreName = ?) "
+                  + "  AND artistID = (SELECT artistID FROM Artist "
+                                    + "WHERE  artistName = ?);";
             pStatement = connection.prepareStatement(query);
-            pStatement.setString(1, artistName);
-            pStatement.setString(2, genreName);
+            pStatement.setString(1, genreName);
+            pStatement.setString(2, artistName);
             resultSet = pStatement.executeQuery();
             
             while (resultSet.next()) {

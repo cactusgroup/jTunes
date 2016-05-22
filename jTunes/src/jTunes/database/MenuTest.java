@@ -23,8 +23,8 @@ public class MenuTest {
         while(!exitBool){
         	// Genre Loop, will loop if input is incorrect. 
         	while(true){
-        		 	System.out.println(underline);
-        	        menu.getValues(Menu.ValueType.genre);           // prints list of genres
+        	        System.out.println(underline);
+        	        menu.getValues(ValueType.genre);           // prints list of genres
         	        System.out.println();
         	        
         	        System.out.print(select + "genre (type its name) or type 'quit' to exit: ");
