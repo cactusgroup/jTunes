@@ -3,7 +3,8 @@ package jTunes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,6 +84,14 @@ public class App {
                 f.add(generateUI());
                 f.pack();                               // fits f to its contents
                 f.setResizable(false);
+                f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        
+                    }
+                });
+                
                 f.setVisible(true);
                 
                 query(ValueType.genre);

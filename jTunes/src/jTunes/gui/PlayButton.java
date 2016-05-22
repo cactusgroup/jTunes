@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import jTunes.Resources;
 import jTunes.database.AudioPlayer;
 
+@SuppressWarnings("serial")
 public class PlayButton extends CustomButton {
     private boolean playing;
     

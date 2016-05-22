@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import jTunes.database.ValueType;
 import jTunes.QueryResponse;
 
+@SuppressWarnings("serial")
 public class SearchResult extends JPanel {
     private Border outerBorder;
     private Border innerBorder;

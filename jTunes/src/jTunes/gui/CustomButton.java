@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class CustomButton extends JPanel {
     private ImageIcon myIcon;
     private JLabel myLabel;
