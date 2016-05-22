@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -43,15 +44,26 @@ public class DatabaseSetup  {
             while((s = br.readLine()) != null) {
                 sb.append(s);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("SQL file not found.");
-            System.out.println("Database generation failed.");
+        } 
+        catch (FileNotFoundException e) {
+        	
+        	try(BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseSetup.class.getResourceAsStream("/resources/sql/finalAssignment.sql")))){
+        		while((s = br.readLine()) != null) {
+                    sb.append(s);
+                }
+        	}
+        	
+        	catch (IOException ex){
+        		System.out.println("SQL file not found.");
+        		System.out.println("Database generation failed.");
             
-            System.out.println("*** Error: "+e.toString());
-            System.out.println("*** ");
-            System.out.println("*** Stack Trace:");
-            e.printStackTrace();
-            return;
+        		System.out.println("*** Error: "+e.toString());
+        		System.out.println("*** ");
+        		System.out.println("*** Stack Trace:");
+        		e.printStackTrace();
+        		return;
+        	} 
+        	
         } catch (IOException e) {
             System.out.println("An I/O error occured when reading the SQL file.");
             System.out.println("Database generation failed.");
