@@ -258,9 +258,32 @@ public class Menu implements Runnable {
     	}
 
     }
+<<<<<<< HEAD
+<<<<<<< HEAD
 	@Override
 	public void run() {
 		MP3Player.launch(MP3Player.class, songName);
 	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+=======
+=======
+>>>>>>> 00d7e5651df88d9c9bd48ce5cae2e12fa6f249f5
+
+    @Override
+    // implementing Runnable
+    public void run() {
+        Application.launch(player.getClass(), songName);	
+    }
+<<<<<<< HEAD
+>>>>>>> 00d7e5651df88d9c9bd48ce5cae2e12fa6f249f5
+=======
+>>>>>>> 00d7e5651df88d9c9bd48ce5cae2e12fa6f249f5
  }
 
