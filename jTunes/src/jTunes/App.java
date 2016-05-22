@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,10 +43,11 @@ public class App {
     
     private static SearchResultPanel resultsPanel;           // search results
     
+    private static String AlbArt = "";
     private static Menu menu;
     private static AudioPlayer player;
     
-    public static JPanel generateUI() {
+    public static JPanel generateUI() throws IOException {
         menu = new Menu();
         player = new AudioPlayer();
         
@@ -83,7 +85,12 @@ public class App {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame f = new JFrame("jTunes " + VersionID);
-                f.add(generateUI());
+                try {
+                    f.add(generateUI());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 f.pack();                               // fits f to its contents
                 f.setResizable(false);
                 f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -138,6 +145,7 @@ public class App {
     
     public static void query(ValueType type, String... constraints) {
         resultsPanel.clearSearchResults();
+        resultsPanel.setVisible(true);
         
         List<String> list = new ArrayList<>(15);
         
@@ -193,6 +201,7 @@ public class App {
                         // will respond with album choice
                         System.out.println("----Album selected----");
                         query(prev.next(), response);
+                        AlbArt = response;
                         headerPanel.setTitle("Songs");
                         break;
                     }
@@ -203,7 +212,7 @@ public class App {
                 // will respond with song choice
                 // (this is the base case)
                 System.out.println("----Song selected----");
-                resultsPanel.clearSearchResults();
+                resultsPanel.setVisible(false);
                 
                 // stop currently-playing / finished-playing song if needed
                 if(player.isPlaying()) {
@@ -220,6 +229,13 @@ public class App {
                 
                 System.out.println("----Song loaded----");
                 footerPanel.setCurrentSong(response);
+                
+                try {
+                    bodyPanel.SetAlbumArt(AlbArt);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }
