@@ -148,6 +148,16 @@ public class Menu implements Runnable {
         }
         return list;
     }
+    
+    public void closeConnection() {
+        try {
+            DatabaseSetup.closeConnection(connection);
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection...");
+            e.printStackTrace();
+        }
+    }
+    
     /*
     public void getArtists(String genreName) {
         try {
@@ -244,10 +254,10 @@ public class Menu implements Runnable {
 
     }
 
-	@Override
-	public void run() {
-		Application.launch(player.getClass(), songName);
-		
-	}
+    @Override
+    // implementing Runnable
+    public void run() {
+        Application.launch(player.getClass(), songName);	
+    }
  }
 
