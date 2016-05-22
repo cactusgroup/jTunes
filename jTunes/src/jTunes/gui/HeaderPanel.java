@@ -45,6 +45,7 @@ public class HeaderPanel extends JPanel {
                 ColorConstants.MINT);
             menuButton.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
+                    App.setTitle("Genres");
                     App.query(ValueType.genre);
                 }
             });

@@ -55,7 +55,7 @@ public class App {
         appPanel.setBackground(Color.LIGHT_GRAY);
         
         // initialize our structure panels
-        headerPanel = new HeaderPanel("Genre");            
+        headerPanel = new HeaderPanel("Genres");            
         bodyPanel = new BodyPanel();                
         footerPanel = new FooterPanel("Hello");
         // the FooterPanel gets a Player to itself
@@ -88,6 +88,10 @@ public class App {
                 query(ValueType.genre);
             }
         });
+    }
+    
+    public static void setTitle(String t) {
+        headerPanel.setTitle(t);
     }
     
     public static void query(ValueType type, String... constraints) {
@@ -135,16 +139,19 @@ public class App {
                         // will respond with genre choice
                         System.out.println("----Genre selected----");
                         query(prev.next(), response);
+                        headerPanel.setTitle("Artists");
                         break;
                     case 1:
                         // will respond with artist choice (genre choice saved)
                         System.out.println("----Artist selected----");
                         query(prev.next(), prevConstraints[0], response);
+                        headerPanel.setTitle("Albums");
                         break;
                     case 2:
                         // will respond with album choice
                         System.out.println("----Album selected----");
                         query(prev.next(), response);
+                        headerPanel.setTitle("Songs");
                         break;
                     }
                     
