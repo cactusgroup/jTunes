@@ -1,5 +1,6 @@
 package jTunes.database;
 
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,12 +15,17 @@ import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
-public class Menu {
+import javafx.application.Application;
+
+public class Menu implements Runnable {
     public enum ValueType {
         genre, artist, album, song
     }
     
+    private volatile static MP3Player player = new MP3Player();
     private String query;
+    private volatile static String songName = "";
+    private volatile static boolean AppRun = false;
     private Connection connection;
     private Statement statement;
     private PreparedStatement pStatement;
@@ -218,7 +224,7 @@ public class Menu {
         }    
     }
     */
-    public void activateSong(String song) {
+    public void activateSong(String song) throws SQLException, URISyntaxException {
         /*
     	if(!audioPlayer.load(song)) return false;
         while(!audioPlayer.isCompleted()) {
@@ -227,6 +233,22 @@ public class Menu {
         }
         return true;
         */
-    	MP3Player.launch(MP3Player.class, song);
+    	//MP3Player.launch(MP3Player.class, song);
+    	songName = song;
+    	if(AppRun) {
+    		player.loadNewMP3File(song);
+    	}
+    	else{
+    		AppRun = true;
+    		(new Thread(new Menu())).start();
+    	}
+
     }
-}
+
+	@Override
+	public void run() {
+		Application.launch(player.getClass(), songName);
+		
+	}
+ }
+

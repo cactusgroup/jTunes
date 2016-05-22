@@ -1,9 +1,10 @@
 package jTunes.database;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuTest {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, URISyntaxException {
         final String underline = "=================================";
         final String select = "Please select a ";
         
