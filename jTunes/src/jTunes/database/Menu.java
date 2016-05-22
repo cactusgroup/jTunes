@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
-
 import javafx.application.Application;
 
 public class Menu implements Runnable {
@@ -45,11 +44,14 @@ public class Menu implements Runnable {
         QUERIES = Collections.unmodifiableMap(aMap);
     }
     
-    public Menu() throws SQLException {
+    public Menu() {
         try {
             connection = DatabaseSetup.getConnection();
         } catch (MySQLSyntaxErrorException e) {
             System.out.println("ERROR IN SQL DB, DATABASE CORRUPT");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Unable to make connection to the database.");
             e.printStackTrace();
         }
     }

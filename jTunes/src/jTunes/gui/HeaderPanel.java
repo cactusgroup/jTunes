@@ -3,11 +3,15 @@ package jTunes.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
+import jTunes.App;
 import jTunes.Resources;
+import jTunes.database.ValueType;
 
 /* 50 px high
  * +------------------------------+
@@ -29,7 +33,7 @@ public class HeaderPanel extends JPanel {
         // set up layout, size, and background color
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(width, 50));
-        setBackground(ColorConstants.MINT_GREEN);
+        setBackground(ColorConstants.MINT);
         
         // Menu button initialization
         // With attached MouseListener
@@ -38,52 +42,20 @@ public class HeaderPanel extends JPanel {
                 Resources.menuIcon,
                 "\u2261",
                 60,
-                ColorConstants.MINT_GREEN);
+                ColorConstants.MINT);
             menuButton.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-                    // show slide-in menu
+                    App.query(ValueType.genre);
                 }
             });
         add(menuButton, BorderLayout.LINE_START);
         
-        // Title bar / search area initialization
+        // Title bar initialization
         // CENTER
-        JPanel cards = new JPanel(new CardLayout());
-            JPanel titleCard = new JPanel(new BorderLayout());
-                titleCard.setBackground(ColorConstants.MINT_GREEN);
-                titleCard.add(title, BorderLayout.CENTER);
-            JPanel searchCard = new JPanel(new BorderLayout());
-                /* The text of this search box is used to
-                 * inform the SearchSuggestionPanel. */
-                // TODO: attach StateChange listener
-                JTextField searchBox = new JTextField();
-                searchCard.setBackground(ColorConstants.MINT_GREEN);
-                searchCard.add(searchBox, BorderLayout.CENTER);
-        cards.add(titleCard, "title");
-        cards.add(searchCard, "search");
-        add(cards, BorderLayout.CENTER);
-        
-        // Search button initialization
-        // Attached MouseListener
-        // RIGHT (LINE_END)
-        CustomButton searchButton = new CustomButton(
-                Resources.searchIcon,
-                "Q",
-                30,
-                ColorConstants.MINT_GREEN);
-            /* On each click, the CENTER area toggles between
-             * title and search area */
-            searchButton.addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                    CardLayout cl = (CardLayout)(cards.getLayout());
-                    if (showingSearch)
-                        cl.show(cards, "title");
-                    else
-                        cl.show(cards, "search");
-                    showingSearch = !showingSearch;
-                }
-            });
-        add(searchButton, BorderLayout.LINE_END);
+        JPanel titlePanel = new JPanel(new BorderLayout());
+            titlePanel.setBackground(ColorConstants.MINT);
+            titlePanel.add(title, BorderLayout.CENTER);
+        add(titlePanel, BorderLayout.CENTER);
     }
     
     public void setTitle(String t) {

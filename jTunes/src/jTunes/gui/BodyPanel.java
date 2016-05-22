@@ -6,6 +6,6 @@ import javax.swing.JPanel;
 
 public class BodyPanel extends JPanel {
     public BodyPanel() {
-        setPreferredSize(new Dimension(350, 550));
+        setPreferredSize(new Dimension(350, 500));
     }
 }

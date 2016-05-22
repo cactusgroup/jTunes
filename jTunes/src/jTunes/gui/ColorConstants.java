@@ -3,5 +3,17 @@ package jTunes.gui;
 import java.awt.Color;
 
 final class ColorConstants {
-    public static final Color MINT_GREEN = Color.decode("0x00FFAB");
+    public static final Color MINT = Color.decode("0x00FFAB");
+    public static final Color LIGHT_MINT;
+    static {
+        Color c = ColorConstants.MINT;
+        float[] hsbvals = null;
+        hsbvals = Color.RGBtoHSB(c.getRed(),
+                                 c.getGreen(),
+                                 c.getBlue(),
+                                 hsbvals);
+        LIGHT_MINT = Color.getHSBColor(0.97f*hsbvals[0],
+                                       0.3f*hsbvals[1],
+                                       hsbvals[2]);
+    }
 }

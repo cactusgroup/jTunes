@@ -78,50 +78,52 @@ public class AudioPlayer implements LineListener {
         
 
 
-    private void play(){ // Function plays the sound file
-        if(audioClip.isOpen()  && !(audioClip.isActive())){
-            if(audioClip.getMicrosecondPosition() == audioClip.getMicrosecondLength()){
-                audioClip.setFramePosition(START);
-            }
+    public void play(){ // Function plays the sound file
+        if(audioClip.isOpen()  && !(audioClip.isActive())) {
+            playCompleted = false;
             audioClip.start();
             System.out.println("Song Playing");
         } 
     }
    
-    public boolean isCompleted(){ // Returns bool if play is completed
+    public boolean isCompleted(){ // Returns true if play is completed and not looping
         return playCompleted;
     }
     
-    private void end(){ // This closes the file and triggers playCompleted boolean
+    public void end() { // This closes the file and triggers playCompleted boolean
         audioClip.close();
         playCompleted = true;
         System.out.println("Song Ended");
     }
     
-    private void pause(){ // This pauses the playback of the file. 
+    public void pause(){ // This pauses the playback of the file. 
         if(audioClip.isActive()){
             System.out.println("Paused");
             audioClip.stop();
         }
     }
    
-    private void beginning(){ // |< goes to the beginning of the file to play.
+    public void beginning(){ // |< goes to the beginning of the file to play.
         audioClip.setFramePosition(START);
         System.out.println("Song back to beginning");
     }
    
-    private void toggleLoop(){ // toggles loop function
+    public void toggleLoop(){ // toggles loop function
         loop = !loop;
     }
    
-    private void back5(){ // Jumps back 5 seconds in playback
-        if(audioClip.getMicrosecondPosition() > FIVESECONDS) audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() - FIVESECONDS);
-        else audioClip.setMicrosecondPosition(START);
+    public void back5(){ // Jumps back 5 seconds in playback
+        if(audioClip.getMicrosecondPosition() > FIVESECONDS)
+            audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() - FIVESECONDS);
+        else 
+            audioClip.setMicrosecondPosition(START);
     }
    
-    private void fwd5(){ // Jumps forward 5 seconds in playback
-        if(audioClip.getMicrosecondPosition() < (audioClip.getMicrosecondLength()-FIVESECONDS)) audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() + FIVESECONDS);
-        else audioClip.setMicrosecondPosition(audioClip.getMicrosecondLength());
+    public void fwd5(){ // Jumps forward 5 seconds in playback
+        if(audioClip.getMicrosecondPosition() < (audioClip.getMicrosecondLength()-FIVESECONDS))
+            audioClip.setMicrosecondPosition(audioClip.getMicrosecondPosition() + FIVESECONDS);
+        else 
+            audioClip.setMicrosecondPosition(audioClip.getMicrosecondLength());
     }
     
     public double getSongProgress(){ // Returns the current song progress as a double between 0.0 and 100.0.
@@ -141,8 +143,12 @@ public class AudioPlayer implements LineListener {
         } 
         else if (type == LineEvent.Type.STOP) {
             System.out.println("Playback stopped");
-            if (audioClip.getMicrosecondLength() == audioClip.getMicrosecondPosition()){
+            if (audioClip.getMicrosecondLength() == audioClip.getMicrosecondPosition()) {
+                playCompleted = true;
+                System.out.println("Playback completed.");
                 if(loop) {
+                    playCompleted = false;
+                    beginning();
                     play();
                 }
             }  

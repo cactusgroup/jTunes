@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class DatabaseSetup  {
     private static final String USER = "root";
     private static final String PASSWORD = "";
  
-    public static Connection getConnection() throws SQLException{
+    public static Connection getConnection() throws SQLException {
         try {
             return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
         } catch(SQLException e) {

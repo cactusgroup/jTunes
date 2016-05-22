@@ -54,6 +54,7 @@ public class CustomButton extends JPanel {
             myLabel.setFont(new Font("Sans-Serif", Font.BOLD, fontSize));
         }
         add(myLabel, BorderLayout.CENTER);
+        repaint();
         revalidate();
     }
 }
