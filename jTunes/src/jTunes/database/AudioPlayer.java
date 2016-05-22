@@ -6,7 +6,6 @@ package jTunes.database;
 
 import jTunes.Resources;
  
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.InputMismatchException;
@@ -39,7 +38,7 @@ public class AudioPlayer implements LineListener {
     private Scanner reader = new Scanner(System.in); 
      
     
-    public void load(String songName){ // Loads the sound file into Clip.
+    public boolean load(String songName){ // Loads the sound file into Clip.
         String audioFilePath = Resources.audioRoot + songName + ".wav";
         URL audioFile = getClass().getClassLoader().getResource(audioFilePath);
 //        File audioFile = new File(audioFilePath);
@@ -54,18 +53,26 @@ public class AudioPlayer implements LineListener {
             audioClip.addLineListener(this);
             audioClip.open(audioStream);
             System.out.println("Song Loaded");
+            return true;
         }
         catch (UnsupportedAudioFileException ex) {
             System.out.println("The specified audio file is not supported.");
-            ex.printStackTrace();
+            return false;
+            //ex.printStackTrace();
+        }
+        catch(NullPointerException ex){
+        	System.out.println("File not Found or Song Name Incorrect");
+        	return false;
         }
         catch (LineUnavailableException ex) {
             System.out.println("Audio line for playing back is unavailable.");
-            ex.printStackTrace();
+            return false;
+            //ex.printStackTrace();
         }
         catch (IOException ex) {
             System.out.println("Error playing the audio file.");
-            ex.printStackTrace();
+            return false;
+            //ex.printStackTrace();
         }
     }
         
@@ -152,7 +159,7 @@ public class AudioPlayer implements LineListener {
         
         int n = 0;
 
-        System.out.print("Play - 1\nPause - 2\nExit -3\nGo back to the beginning - 4\nToggle Loop - 5\nBack 5 seconds - 6\nForward 5 seconds - 7\n");
+        System.out.print("1 - Play\n2 - Pause\n3 - Exit\n4 - Go back to the beginning\n5 - Toggle Loop\n6 - Back 5 seconds\n7 - Forward 5 seconds\n");
         if (loop) System.out.println("Looping is enabled");
         
         try {

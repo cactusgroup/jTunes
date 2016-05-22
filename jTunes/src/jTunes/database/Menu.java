@@ -24,6 +24,7 @@ public class Menu {
     private Statement statement;
     private PreparedStatement pStatement;
     private ResultSet resultSet;
+    private AudioPlayer audioPlayer = new AudioPlayer();
     
     private int genreID;                        // require for a compound query
     
@@ -83,9 +84,8 @@ public class Menu {
             resultSet = pStatement.executeQuery();
             
             while (resultSet.next()) {
-                String column = resultSet.getString("artistName");
-                list.add(column);
-                System.out.println(column);
+                list.add(resultSet.getString("artistName"));
+                System.out.println(resultSet.getString("artistName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +96,8 @@ public class Menu {
         
         return list;
     }
-    public void getAlbumsByArtistInGenre(String artistName, String genreName) {
+    public List<String> getAlbumsByArtistInGenre(String artistName, String genreName) {
+    	List<String> list = new ArrayList<>(5);
         try {
             query = "SElECT albumName FROM Album "
                   + "WHERE artistID = (SELECT artistID FROM Artist "
@@ -109,6 +110,7 @@ public class Menu {
             resultSet = pStatement.executeQuery();
             
             while (resultSet.next()) {
+            	list.add(resultSet.getString("albumName"));
                 System.out.println(resultSet.getString("albumName"));
             }
         } catch (SQLException e) {
@@ -117,8 +119,10 @@ public class Menu {
             try { resultSet.close(); } catch (Exception e) {}
             try { pStatement.close(); } catch (Exception e) {}
         }
+        return list;
     }
-    public void getSongsInAlbumByArtistInGenre(String albumName) {
+    public List<String> getSongsInAlbumByArtistInGenre(String albumName) {
+    	List<String> list = new ArrayList<>(5);
         try {
             query = "SELECT songTitle FROM Songs "
                   + "WHERE  albumID = (SELECT albumID FROM Album "
@@ -128,6 +132,7 @@ public class Menu {
             resultSet = pStatement.executeQuery();
             
             while (resultSet.next()) {
+            	list.add(resultSet.getString("songTitle"));
                 System.out.println(resultSet.getString("songTitle"));
             }
         } catch (SQLException e) {
@@ -136,6 +141,7 @@ public class Menu {
             try { resultSet.close(); } catch (Exception e) {}
             try { pStatement.close(); } catch (Exception e) {}
         }
+        return list;
     }
     
     public void getArtists(String genreName) {
@@ -202,7 +208,7 @@ public class Menu {
     }
     private void printSongs(int albumID) {
         try {
-            query = "SELECT songTitle FROM Songs WHERE songID = " + albumID + ";";
+            query = "SELECT songTitle FROM Songs WHERE albumID = " + albumID + ";";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 System.out.println(resultSet.getString("songTitle"));
@@ -212,12 +218,12 @@ public class Menu {
         }    
     }
     
-    public void activateSong(String song) {
-        AudioPlayer audioPlayer = new AudioPlayer();
-        audioPlayer.load(song);
+    public boolean activateSong(String song) {
+        if(!audioPlayer.load(song)) return false;
         while(!audioPlayer.isCompleted()) {
             // System.out.println(audioPlayer.getSongProgress()); // not necessary but can be useful for GUI
             audioPlayer.menu();
         }
+        return true;
     }
 }
