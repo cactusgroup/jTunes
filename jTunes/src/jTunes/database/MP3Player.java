@@ -1,5 +1,6 @@
 package jTunes.database;
 import java.io.File;
+import java.net.URISyntaxException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,23 +16,21 @@ import javafx.util.Duration;
 
 public class MP3Player extends Application {
 	
-	private boolean loop; // Used to track the toggle loop
-	private Duration a = new Duration(5000); // 5 seconds used to forward and back 5 seconds
+	private volatile static boolean loop; // Used to track the toggle loop
+	private final static Duration a = new Duration(5000); // 5 seconds used to forward and back 5 seconds
+	private volatile static MediaPlayer mediaPlayer;
 	
 	@Override
-	public void start(Stage stage) {
+	public void start(Stage stage) throws URISyntaxException {
 		// Getting the parameters and finding the song path
 		Parameters params = getParameters(); 
-		String songPath = new File("src/mp3tracks/" + params.getRaw().get(0) + ".mp3").getAbsolutePath();
-	
-		// Creating the media to be played by the media player
-		Media musicFile = new Media(new File(songPath).toURI().toString());
-		MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
+		mediaPlayer = JfxMP3Player.loadSong(params.getRaw().get(0));
 		
 		// Buttons used
 		Button btn_play = new Button("Play");
 		Button btn_pause = new Button("Pause");
 		Button btn_exit = new Button("Exit"); // Most likely won't be needed for GUI
+		Button btn_stop = new Button("Stop");
 		Button btn_backToBeginning = new Button("Go back to the beginning");
 		Button btn_toggleLoop = new Button("Toggle Loop");
         Label loopStatus = new Label("false");
@@ -56,8 +55,16 @@ public class MP3Player extends Application {
 		btn_exit.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				mediaPlayer.dispose();
-				stage.close();
+				mediaPlayer.stop();
+				//mediaPlayer.dispose();
+				//stage.close();
+			}
+		});
+		
+		btn_stop.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				mediaPlayer.stop();
 			}
 		});
 		
@@ -100,14 +107,23 @@ public class MP3Player extends Application {
 	  
 		mediaPlayer.setAutoPlay(true); // Will start the song automatically
 		
+		
 		// Used to set up the GUI
 		VBox root = new VBox();
-		root.getChildren().addAll(btn_play, btn_pause, btn_exit, btn_backToBeginning, btn_toggleLoop, loopStatus, btn_back5, btn_fwd5);
+		root.getChildren().addAll(btn_play, btn_pause, btn_exit, btn_stop, btn_backToBeginning, btn_toggleLoop, loopStatus, btn_back5, btn_fwd5);
 		Scene scene = new Scene(root, 500, 500);
 		stage.setScene(scene);    
 		stage.setTitle("JTunes");
     	stage.setWidth(200);
-    	stage.setHeight(250);
+    	stage.setHeight(275);
     	stage.show();
-    }		
+    }	
+	
+	public void loadNewMP3File(String filename) throws URISyntaxException{
+		mediaPlayer.stop();
+		mediaPlayer.dispose();
+		mediaPlayer = JfxMP3Player.loadSong(filename);
+		mediaPlayer.play();
+	}
+	
 }
