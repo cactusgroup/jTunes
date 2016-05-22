@@ -14,11 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
-import javafx.application.Application;
+import javafx.application.Platform;
 
 public class Menu implements Runnable {
     
-    private volatile static MP3Player player = new MP3Player();
     private String query;
     private volatile static String songName = "";
     private volatile static boolean AppRun = false;
@@ -235,7 +234,13 @@ public class Menu implements Runnable {
     	//MP3Player.launch(MP3Player.class, song);
     	songName = song;
     	if(AppRun) {
-    		player.loadNewMP3File(song);
+    		Platform.runLater(() -> {
+    			try {
+					MP3Player.loadNewMP3File(songName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    		});
     	}
     	else{
     		AppRun = true;
@@ -243,11 +248,17 @@ public class Menu implements Runnable {
     	}
 
     }
-
 	@Override
 	public void run() {
-		Application.launch(player.getClass(), songName);
-		
+		MP3Player.launch(MP3Player.class, songName);
+	}
+	
+	public void closeConnection() {
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
  }
 

@@ -3,6 +3,8 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javafx.application.Platform;
+
 public class MenuTest {
     public static void main(String[] args) throws SQLException, URISyntaxException {
         final String underline = "=================================";
@@ -96,8 +98,15 @@ public class MenuTest {
         	break;
         	}        	
         }
-        
         System.out.println("Exiting, goodbye!");
-        scanner.close();
+        
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+        	public void run() {
+                System.out.println("Exiting, goodbye!");
+                scanner.close();
+                menu.closeConnection();
+                Platform.exit();
+        	}
+        });
     }
 }
