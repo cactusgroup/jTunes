@@ -50,7 +50,7 @@ public class MenuTest {
              System.out.print(select + "artist (type its name): ");
              input = scanner.nextLine();
              System.out.println(underline);
-             if(menu.getAlbumsByArtistInGenre(input, savedGenre).isEmpty()){
+             if(menu.getAlbumsByArtistInGenre(savedGenre, input).isEmpty()){
             		System.out.println("Invalid Choice.");
             		System.out.println(underline);
             		menu.getArtistsInGenre(savedInput);
