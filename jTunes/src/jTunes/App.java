@@ -162,7 +162,21 @@ public class App {
                 // (this is the base case)
                 System.out.println("----Song selected----");
                 resultsPanel.clearSearchResults();
-                player.load(response);
+                try{
+                	if(player.isPlaying()){
+                		player.end();
+                		player.load(response);
+                		player.play();
+                	}
+                	else if(player.isCompleted()){
+                		player.end();
+                		player.load(response);
+                	}
+                	else player.load(response);
+                	
+                	}
+                	catch(Exception e){player.load(response);}
+                
                 System.out.println("----Song loaded----");
                 footerPanel.setCurrentSong(response);
             }
