@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import jTunes.Resources;
 import jTunes.database.AudioPlayer;
+import jTunes.database.MP3Player_GUI;
 
 @SuppressWarnings("serial")
 public class PlayButton extends CustomButton {
@@ -23,21 +24,21 @@ public class PlayButton extends CustomButton {
         playing = false;
     }
     
-    public void toggle(AudioPlayer player) {
+    public void toggle(MP3Player_GUI myPlayer) {
         if (!playing) {                 // that is, Button clicked to play song
             setIcon(Resources.pauseIcon, "||", 40);
-            player.play();
+            MP3Player_GUI.play();
             
             // revert to play icon on song end
             // and prepare to play again.
             Timer t = new Timer(0, null);
             ActionListener a = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (player.isCompleted()) {
+                    if (MP3Player_GUI.isCompleted()) {
                         PlayButton.this.setIcon(Resources.playIcon, ">", 40);
                         playing = !playing;
                         
-                        player.beginning();
+                        MP3Player_GUI.backtoBeginning();
                         t.stop();
                     }
                 }
@@ -47,7 +48,7 @@ public class PlayButton extends CustomButton {
             t.start();
         } else {                        // that is, Button clicked to pause song
             setIcon(Resources.playIcon, ">", 40);
-            player.pause();
+            MP3Player_GUI.pause();
         }
         playing = !playing;
     }
