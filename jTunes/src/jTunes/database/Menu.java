@@ -15,11 +15,16 @@ import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import javafx.application.Platform;
-
+/*
+ * CSc 221 Final Project
+ * March 22, 2016
+ * The Menu class interacts with the database connection, and retrieves data such as: genre
+ * artists, albums, and songs using SQL statements.
+*/
 public class Menu implements Runnable {
     
-    private String query;
-    private volatile static String songName = "";
+    private String query;   //will store the SQL statements
+    private volatile static String songName;  // 
     private volatile static boolean AppRun = false;
     private Connection connection;
     private Statement statement;

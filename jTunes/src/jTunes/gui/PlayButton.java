@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import jTunes.Resources;
-import jTunes.database.AudioPlayer;
 import jTunes.database.MP3Player_GUI;
 
 @SuppressWarnings("serial")

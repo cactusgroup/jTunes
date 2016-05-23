@@ -49,12 +49,10 @@ public class App {
     private static String songName = "";
     private static String AlbArt = "";
     private static Menu menu;
-    private static AudioPlayer player;
     private static volatile MP3Player_GUI player_GUI;
     
     public static JPanel generateUI() throws IOException {
         menu = new Menu();
-        player = new AudioPlayer();
         
         // initialize our main App panel
         JPanel appPanel = new JPanel();
@@ -131,7 +129,6 @@ public class App {
             public void run() {
                 try {
                     menu.closeConnection();
-                    player.end();
                     System.out.println("Resources closed.");
                     mainThread.join();
                     System.out.println("Shutting down.");

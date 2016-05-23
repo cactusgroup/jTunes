@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.*;
 import jTunes.Resources;
-import jTunes.database.AudioPlayer;
 import jTunes.database.MP3Player_GUI;
 
 /* 50 px high
