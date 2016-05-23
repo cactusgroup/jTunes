@@ -55,6 +55,11 @@ public class MP3Player_GUI extends Application {
             mediaPlayer.stop();
         }
         
+        public static void close(){
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
+        
         public static void backtoBeginning() {
             mediaPlayer.stop();
             mediaPlayer.play();  
