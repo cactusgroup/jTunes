@@ -11,6 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * This panel is effectively our album art panel
+ * @author Carl Colena
+ */
 @SuppressWarnings("serial")
 public class BodyPanel extends JPanel {
     private JLabel picLabel;            // pic label for album art container in JLabel.
@@ -19,6 +23,11 @@ public class BodyPanel extends JPanel {
         setPreferredSize(new Dimension(350, 500));
     }
     
+    /**
+     * Sets album art to display on this panel
+     * @param albumart
+     * @throws IOException
+     */
     public void SetAlbumArt(String albumart) throws IOException{
         BufferedImage myPicture; // BufferedImage object to hold our picture
         
