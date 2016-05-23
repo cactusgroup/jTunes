@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class BodyPanel extends JPanel {
-    private static JLabel picLabel; // pic label for album art container in JLabel.
-    private boolean imgSet = false; // Boolean for label instantiation and setting.
+    private JLabel picLabel;            // pic label for album art container in JLabel.
+    private boolean imgSet = false;     // Boolean for label instantiation and setting.
     public BodyPanel() {
         setPreferredSize(new Dimension(350, 500));
     }
@@ -25,11 +25,10 @@ public class BodyPanel extends JPanel {
         
         try{ // Lets try to load from the relative path in our Eclipse project
             myPicture = ImageIO.read(new File("src/resources/imgs/"+albumart+".jpg"));
-            }
-        
+        }
         catch(Exception e){ //Otherwise, read from relative path in .jar.
             myPicture = ImageIO.read(getClass().getResource("/resources/imgs/" + albumart + ".jpg"));
-            }
+        }
         
         if(!imgSet){ // If the image JLabel wasn't already set
             picLabel = new JLabel(new ImageIcon(myPicture)); // New JLabel and picture
