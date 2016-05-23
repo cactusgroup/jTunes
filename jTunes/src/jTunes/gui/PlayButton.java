@@ -23,7 +23,7 @@ public class PlayButton extends CustomButton {
         playing = false;
     }
     
-    public void toggle(MP3Player_GUI myPlayer) {
+    public void toggle() {
         if (!playing) {                 // that is, Button clicked to play song
             setIcon(Resources.pauseIcon, "||", 40);
             MP3Player_GUI.play();
