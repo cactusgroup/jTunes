@@ -20,7 +20,11 @@ public class BodyPanel extends JPanel {
     }
     
     public void SetAlbumArt(String albumart) throws IOException{
-        BufferedImage myPicture = ImageIO.read(new File("src/resources/imgs/"+albumart+".jpg"));
+        BufferedImage myPicture;
+        try{myPicture = ImageIO.read(new File("src/resources/imgs/"+albumart+".jpg"));}
+        catch(Exception e){
+        myPicture = ImageIO.read(getClass().getResource("/resources/imgs/" + albumart + ".jpg"));}
+        
         if(!imgSet){
             picLabel = new JLabel(new ImageIcon(myPicture));
             imgSet = true;

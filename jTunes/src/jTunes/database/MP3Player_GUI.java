@@ -19,12 +19,13 @@ public class MP3Player_GUI extends Application {
         public static MediaPlayer loadSong(String fileName) throws URISyntaxException{
         Media musicFile;
                 try{
+                        musicFile = new Media(MP3Player_GUI.class.getResource("/mp3tracks/" + fileName + ".mp3").toURI().toString());
+                }
+                catch(Exception e){
+                        
                         String songPath = new File("src/mp3tracks/" + fileName + ".mp3").getAbsolutePath();
                         System.out.println(songPath);
                         musicFile = new Media(new File(songPath).toURI().toString());
-                }
-                catch(Exception e){
-                        musicFile = new Media(MP3Player_GUI.class.getResource("/mp3tracks/" + fileName + ".mp3").toURI().toString());
                 }
                 // Creating the media to be played by the media player
                 return new MediaPlayer(musicFile);
