@@ -73,15 +73,18 @@ public class FooterPanel extends JPanel {
                 }
             });
         
-        buttons.add(backButton, BorderLayout.LINE_START);
+        // add our playback controls to the "buttons" grouping pane 
+        buttons.add(backButton, BorderLayout.WEST);
         buttons.add(playButton, BorderLayout.CENTER);
-        buttons.add(forwardButton, BorderLayout.LINE_END);
-        add(buttons, BorderLayout.LINE_START);
+        buttons.add(forwardButton, BorderLayout.EAST);
+        add(buttons, BorderLayout.WEST); // goes on the left
         
+        // instantiate song title label
         message = new JLabel("Playing: " + currentSong);
-        add(message, BorderLayout.CENTER);
+        add(message, BorderLayout.CENTER); // goes in the center
     }
     
+    // this method sets our JLabel's text
     public void setCurrentSong(String cS) {
         currentSong = cS; // Displays on the GUI the current song.
         message.setText("Playing: " + currentSong);
