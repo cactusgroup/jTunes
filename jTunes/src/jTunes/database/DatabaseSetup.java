@@ -14,47 +14,54 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
-
+/*
+ * The DatabaseSetup class forms the connection with the database. It generates the 
+ * database from the .sql file, creates the connection with the database, 
+ * and closes the connection. 
+*/
 public class DatabaseSetup  {
  
-    private static final String SETUP_URL = "jdbc:mysql://localhost:3306?autoReconnect=true&useSSL=false";
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/finalAssignment?autoReconnect=true&useSSL=false";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
- 
+    private static final String SETUP_URL = "jdbc:mysql://localhost:3306?autoReconnect=true&useSSL=false";  // the URL needed to setup the database
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/finalAssignment?autoReconnect=true&useSSL=false";  // the database URL
+    private static final String USER = "root";  // username to log in to the database
+    private static final String PASSWORD = "";  // password to log in to the database
+    
+    // returns a connection object that is connected to the database
     public static Connection getConnection() throws SQLException {
         try {
-            return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+            return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD); // the DriverManager connects to the database
         } catch(SQLException e) {
             System.out.println("Database missing, generating new database...");
-            generateDatabase();
-            return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+            generateDatabase(); // if database is missing, it will generate the database first
+            return DriverManager.getConnection(DATABASE_URL, USER, PASSWORD); // connects with the database after it was generated
         }
     }
     
+    // closes the connection to the database
     public static void closeConnection(Connection c) throws SQLException {
         c.close();
     }
- 
+    
+    // generates the database, if it hasn't been found, using a stored .sql file
     private static void generateDatabase() {
         String s = new String();
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();  // buffers 
         
-        DatabaseSetup.class.getClassLoader().getResource(Resources.sqlFile);
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/resources/sql/finalAssignment.sql")))) {
-            while((s = br.readLine()) != null) {
-                sb.append(s);
+        DatabaseSetup.class.getClassLoader().getResource(Resources.sqlFile);  // loads the .sql file
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/resources/sql/finalAssignment.sql")))) { // tries reading the file
+            while((s = br.readLine()) != null) {  // reads line by line
+                sb.append(s); // adds the read string to the buffer
             }
         } 
         catch (FileNotFoundException e) {
-        	
+        	// if can't be found, tries looking for the file and read it
         	try(BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseSetup.class.getResourceAsStream("/resources/sql/finalAssignment.sql")))){
         		while((s = br.readLine()) != null) {
                     sb.append(s);
                 }
         	}
         	
-        	catch (IOException ex){
+        	catch (IOException ex) {
         		System.out.println("SQL file not found.");
         		System.out.println("Database generation failed.");
             
@@ -81,18 +88,18 @@ public class DatabaseSetup  {
         String[] inst = sb.toString().split(";");
         
         try {
-            Connection c = DriverManager.getConnection(SETUP_URL, USER, PASSWORD);
-            Statement st = c.createStatement();
+            Connection c = DriverManager.getConnection(SETUP_URL, USER, PASSWORD); // tries to get a connection to setup the database
+            Statement st = c.createStatement();  // creates a statement object to execute the SQL statements
  
-            for(int i = 0; i<inst.length; i++){
+            for(int i = 0; i < inst.length; i++) {  
                 /* we ensure that we do not execute
                  * either empty statements or SQL comments */
-                if(!inst[i].trim().equals("") && !inst[i].contains("-- ")){
-                    st.executeUpdate(inst[i]);
+                if(!inst[i].trim().equals("") && !inst[i].contains("-- ")) { // trims the SQL statement properly
+                    st.executeUpdate(inst[i]); // executes the SQL statement and updates the database
                     System.out.println(">>"+inst[i]);
                 }
             }
-            closeConnection(c);
+            closeConnection(c); // closes the connection used to setup the database
             System.out.println("Database generated");
         } catch(Exception e) {
             System.out.println("*** Error: "+e.toString());

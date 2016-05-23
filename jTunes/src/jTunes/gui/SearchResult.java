@@ -13,15 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import jTunes.database.ValueType;
-import jTunes.QueryResponse;
+import jTunes.SearchResultResponse;
 
 @SuppressWarnings("serial")
 public class SearchResult extends JPanel {
     private Border outerBorder;
     private Border innerBorder;
     private boolean last;
-    private QueryResponse myResponse;
-    
+    private SearchResultResponse myResponse;
+
     public SearchResult(ValueType type, String text)  {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(340, 50));
@@ -51,17 +51,23 @@ public class SearchResult extends JPanel {
         addMouseListener(new MouseAdapter() {
             private SearchResult s = SearchResult.this;
             public void mousePressed(MouseEvent e) {
+                // button down style
                 s.setBackground(ColorConstants.LIGHT_MINT);
                 s.setInnerBorder(ColorConstants.LIGHT_MINT);
             }
             public void mouseReleased(MouseEvent e) {
+                // button up style
                 s.setBackground(Color.WHITE);
                 s.setInnerBorder(Color.WHITE);
+                
+                // also, register with App that "I was clicked!"
                 myResponse.respond(text);
             }
         });
     }
     
+    
+    // sets this search result as the last in the list
     public void setLast(boolean last) {
         this.last = last;
         
@@ -82,7 +88,7 @@ public class SearchResult extends JPanel {
         setLast(this.last);
     }
     
-    public void setResponse(QueryResponse response) {
+    public void setResponse(SearchResultResponse response) {
         myResponse = response;
     }
 }
