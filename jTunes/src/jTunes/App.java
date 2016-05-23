@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,8 @@ import javax.swing.JPanel;              // interior panel
 import javax.swing.SwingUtilities;      // 
 
 import jTunes.gui.*;
+import javafx.application.Application;
+import javafx.application.Platform;
 import jTunes.database.*;
 
 /**
@@ -41,11 +44,13 @@ public class App {
     private static BodyPanel bodyPanel;                      // middle are
     private static FooterPanel footerPanel;                  // bottom bar 
     
+    private static boolean AppRun = false;
     private static SearchResultPanel resultsPanel;           // search results
-    
+    private static String songName = "";
     private static String AlbArt = "";
     private static Menu menu;
     private static AudioPlayer player;
+    private static volatile MP3Player_GUI player_GUI;
     
     public static JPanel generateUI() throws IOException {
         menu = new Menu();
@@ -64,7 +69,7 @@ public class App {
         bodyPanel = new BodyPanel();                
         footerPanel = new FooterPanel("Hello");
         // the FooterPanel gets a Player to itself
-        footerPanel.setPlayer(player);
+        footerPanel.setPlayer(player_GUI);
         
         // initialize our content panels
         resultsPanel = new SearchResultPanel();
@@ -215,7 +220,30 @@ public class App {
                 resultsPanel.setVisible(false);
                 
                 // stop currently-playing / finished-playing song if needed
-                if(player.isPlaying()) {
+                //Application.launch(MP3Player_GUI.class, response);
+                
+                songName = response;
+                
+                if(AppRun) {
+                    try {
+                        if(MP3Player_GUI.isPlaying()){
+                        MP3Player_GUI.loadNewMP3File(songName);
+                        MP3Player_GUI.play();
+                        }
+                        else{
+                            MP3Player_GUI.loadNewMP3File(songName);
+                        }
+                    } catch (URISyntaxException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            else{
+                    AppRun = true;
+                    ThreadRunner runn = new ThreadRunner();
+                    runn.RunMe(songName);               
+            }
+                /*if(player.isPlaying()) {
                     player.end();
                     player.load(response);
                     player.play();
@@ -226,7 +254,7 @@ public class App {
                 }
                 else
                     player.load(response);
-                
+                */
                 System.out.println("----Song loaded----");
                 footerPanel.setCurrentSong(response);
                 

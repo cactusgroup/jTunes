@@ -246,7 +246,7 @@ public class Menu implements Runnable {
     	if(AppRun) {
     		Platform.runLater(() -> {
     			try {
-					MP3Player.loadNewMP3File(songName);
+				MP3Player.loadNewMP3File(songName);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

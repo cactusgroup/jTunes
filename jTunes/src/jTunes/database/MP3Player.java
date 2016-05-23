@@ -150,9 +150,9 @@ public class MP3Player extends Application {
 		Scene scene = new Scene(root, 500, 500);
 		mainStage.setScene(scene);    
 		mainStage.setTitle("JTunes");
-    	mainStage.setWidth(200);
-    	mainStage.setHeight(275);
-    	mainStage.showAndWait();
+		mainStage.setWidth(200);
+    	        mainStage.setHeight(275);
+    	        mainStage.showAndWait();
     	
     }	
 	
