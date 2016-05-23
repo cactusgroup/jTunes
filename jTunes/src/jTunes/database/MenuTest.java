@@ -1,132 +1,129 @@
 package jTunes.database;
-import java.io.File;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 import javafx.application.Platform;
-
+/*
+ * The MenuTest class tests and runs the Menu class application on the console
+*/
 public class MenuTest {
     public static void main(String[] args) throws SQLException, URISyntaxException {
-        final String underline = "=================================";
-        final String select = "Please select a ";
+        final String underline = "=================================";  // used for formatting
+        final String select = "Please select a "; // will be used to prompt the user
         
         Scanner scanner = new Scanner(System.in);
-        String input;
-        String savedInput;
-        String savedGenre;
+        String input;  // stores the input from the user
+        String savedInput;  // saves the last input received
+        String savedGenre;	// saves the genre name in order to retrieve the albums
+       
+        boolean exitBool = false; // will signal when the program should end
+        Menu menu = new Menu();  // Creating a menu object
         
-        Menu menu = new Menu();
         System.out.println();
         System.out.println(underline);
-        
-        boolean exitBool = false;
-        
         System.out.println("Welcome to your playlist!");
-        while(!exitBool){
+      
+        while(!exitBool) {
+  
         	// Genre Loop, will loop if input is incorrect. 
-        	while(true){
+        	while(true) {
         	        System.out.println(underline);
-        	        menu.getValues(ValueType.genre);           // prints list of genres
+        	        menu.getValues(ValueType.genre);  // prints list of genres
         	        System.out.println();
-        	        
         	        System.out.print(select + "genre (type its name) or type 'quit' to exit: ");
         	        input = scanner.nextLine();
-        	        if(input.contentEquals("quit") || input.contentEquals("Quit")) {
+        	        if(input.contentEquals("quit") || input.contentEquals("Quit")) {  // checks if user wants to quit
         	        	exitBool = true;
-        	        	break;
+        	        	break; // breaks out of the genre loop
         	        }
         	        System.out.println(underline);
-        	        if(menu.getArtistsInGenre(input).isEmpty()){
+        	        if(menu.getArtistsInGenre(input).isEmpty()) {  // artists are printed if input is valid
         	        	System.out.println("Invalid Choice.");
-        	        	continue;
+        	        	continue; // will continue the loop until input is valid
         	        }
-        	        else break;
+        	        else break; // will break out of loop if the artist list is not empty (i.e. valid input)
         	}
         	
-        if (exitBool) 
-        	break; // Quitting the application if exitBool is triggered.
-        savedInput = input;
-        savedGenre = savedInput;
+        	if (exitBool) break; // Quitting the application if exitBool is triggered.
+        	savedInput = input; // savedInput is now storing the genre name
+        	savedGenre = savedInput;  // saves the genre
         
-        while(true){
-        	 System.out.println();
-             System.out.print(select + "artist (type its name) or type 'quit' to exit: ");
-             input = scanner.nextLine();
-             if(input.contentEquals("quit") || input.contentEquals("Quit")) {
- 	        	exitBool = true;
- 	        	break;
- 	        }
-             System.out.println(underline);
-             if(menu.getAlbumsByArtistInGenre(savedGenre, input).isEmpty()){
+        	// Artist Loop, will loop if input is incorrect. 
+        	while(true) {
+        		System.out.println();
+        		System.out.print(select + "artist (type its name) or type 'quit' to exit: ");
+        		input = scanner.nextLine();
+        		if(input.contentEquals("quit") || input.contentEquals("Quit")) {  
+        			exitBool = true;
+        			break;  // breaks out of artist loop if input is "quit"
+        		}
+        		System.out.println(underline);
+        		if(menu.getAlbumsByArtistInGenre(savedGenre, input).isEmpty()) {  // prints albums and checks if input is valid
             		System.out.println("Invalid Choice.");
             		System.out.println(underline);
-            		menu.getArtistsInGenre(savedInput);
-    	        	continue;
+            		menu.getArtistsInGenre(savedInput); // prints the artists again if input is incorrect
+    	        	continue;  // continues with the artist loop
     	        }
-    	        else break;	
+    	        else break;	// will break out of loop if the album list is not empty (i.e. valid input)
         	}
-        if(exitBool)
-        	break;
-        savedInput = input;
         
-        while(true){
-        	System.out.println();
-        	System.out.print(select + "album (type its name) or type 'quit' to exit: ");
-        	input = scanner.nextLine();
-        	if(input.contentEquals("quit") || input.contentEquals("Quit")) {
- 	        	exitBool = true;
- 	        	break;
- 	        }
-        	System.out.println(underline);
-        	if(menu.getSongsInAlbumByArtistInGenre(input).isEmpty()){
-        		System.out.println("Invalid Choice.");
-        		System.out.println(underline);
-        		menu.getAlbumsByArtistInGenre(savedGenre, savedInput);
-	        	continue;
-        	}
-        	else break;
-        }
-        if(exitBool)
-        	break;
-        savedInput = input;
+        	if(exitBool) break;  // quits the application if exitBool is triggered
+        	savedInput = input;  // savedInput is now storing the artist name
         
-        while(true){
-        	System.out.println();
-        	System.out.print("Please select a song or type quit to exit: ");
-        	input = scanner.nextLine();
-        	if(input.contentEquals("quit") || input.contentEquals("Quit")) {
-	        	exitBool = true;
-	        	break;
-	        }
-        	if(new File("src/mp3tracks/" + input + ".mp3").exists()) {
-        		menu.activateSong(input);
-        		break;
-        	}
-        	else {
+        	// Album Loop, will loop if input is incorrect
+        	while(true) {
+        		System.out.println();
+        		System.out.print(select + "album (type its name) or type 'quit' to exit: ");
+        		input = scanner.nextLine();
+        		if(input.contentEquals("quit") || input.contentEquals("Quit")) {
+        			exitBool = true;
+        			break;  // breaks out of album loop if input is "quit"
+        		}
         		System.out.println(underline);
-        		System.out.println("Invalid Choice or file doesn't exist");
-        		System.out.println(underline);
-        		menu.getSongsInAlbumByArtistInGenre(savedInput);
-        		continue;
+        		if(menu.getSongsInAlbumByArtistInGenre(input).isEmpty()) {  // prints songs and checks if input is valid
+        			System.out.println("Invalid Choice.");
+        			System.out.println(underline);
+        			menu.getAlbumsByArtistInGenre(savedGenre, savedInput); // prints albums again if input is incorrect
+        			continue;  // continues with the album loop
+        		}
+        		else break;  // will break out of loop if the song list is not empty (i.e. valid input)
         	}
-        	/*
-        	if (!menu.activateSong(input)){
-        		System.out.println(underline);
-        		menu.getSongsInAlbumByArtistInGenre(savedInput);
-        		continue;
-        	}
-        	else break;
-        	*/
-        	}        	
-        }
-        System.exit(0);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
+        
+        	if(exitBool) break;  // quits the application if exitBool is triggered
+        	savedInput = input;  // savedInput is now storing the album name
+        
+        	// Song Loop, will loop if input is incorrect
+        	while(true) {
+        		System.out.println();
+        		System.out.print("Please select a song or type quit to exit: ");
+        		input = scanner.nextLine();
+        		if(input.contentEquals("quit") || input.contentEquals("Quit")) {
+        			exitBool = true;
+        			break; // breaks out of the song loop if input is "quit"
+        		}
+        		if(MenuTest.class.getResource("/mp3tracks/" + input + ".mp3") != null) { // checks if an mp3 file of the song name exists
+        			menu.activateSong(input);
+        			break;  // breaks out of the song loop if the file exists
+        		}
+        		else {
+        			System.out.println(underline);
+        			System.out.println("Invalid Choice or file doesn't exist");
+        			System.out.println(underline);
+        			menu.getSongsInAlbumByArtistInGenre(savedInput);  // prints the songs list again if input is incorrect
+        			continue;  // continues with the song loop
+        		
+        		}
+        	}   // end of song loop   	
+        }  // end of application
+        
+        System.exit(0);  // Terminates the program 
+        Runtime.getRuntime().addShutdownHook(new Thread() {  // runs when the program is terminated
         	public void run() {
                 System.out.println("Exiting, goodbye!");
-                scanner.close();
-                menu.closeConnection();
-                Platform.exit();
+                scanner.close();   // closing the scanner object
+                menu.closeConnection();  // closes the database connection 
+                Platform.exit();  // closes the platform of the application
         	}
         });
     }

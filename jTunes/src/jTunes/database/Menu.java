@@ -15,20 +15,21 @@ import java.util.Map;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import javafx.application.Platform;
-
+/*
+ * The Menu class interacts with the database connection, and retrieves data such as: genre
+ * artists, albums, and songs using SQL statements, which creates the basis for the menus
+*/
 public class Menu implements Runnable {
     
-    private String query;
-    private volatile static String songName = "";
-    private volatile static boolean AppRun = false;
-    private Connection connection;
-    private Statement statement;
-    private PreparedStatement pStatement;
-    private ResultSet resultSet;
-    // private AudioPlayer audioPlayer = new AudioPlayer();
+    private String query;   // Will store the SQL statements
+    private volatile static String songName;  // Stores the songName to be used by the application
+    private volatile static boolean AppRun = false;  // Checks if the application is running
+    private Connection connection; // Used to connect to the database
+    private Statement statement;  // Used to execute the SQL statements
+    private PreparedStatement pStatement; // Used to have a prepared statement for later execution
+    private ResultSet resultSet;  // Stores the results set from the SQL statements
     
-    //private int genreID;        // require for a compound query
-    
+    // The map contains SQL statements that retrieves all of the genres, artists, albums, or songs.
     private static final Map<String, String> QUERIES;
     static {
         Map<String, String> aMap = new HashMap<String, String>();
@@ -37,12 +38,13 @@ public class Menu implements Runnable {
         aMap.put("artists", "SELECT artistName FROM Artist;");
         aMap.put("albums",  "SELECT albumName FROM Album;");
         aMap.put("songs",   "SELECT songName FROM Songs;");
-        QUERIES = Collections.unmodifiableMap(aMap);
+        QUERIES = Collections.unmodifiableMap(aMap); 
     }
     
+    // The Menu constructor connects to the database
     public Menu() {
         try {
-            connection = DatabaseSetup.getConnection();
+            connection = DatabaseSetup.getConnection();  // connects to the database
         } catch (MySQLSyntaxErrorException e) {
             System.out.println("ERROR IN SQL DB, DATABASE CORRUPT");
             e.printStackTrace();
@@ -52,44 +54,43 @@ public class Menu implements Runnable {
         }
     }
     
+    // Receives a type (genre, album, artist, or songs) and returns the complete list of them
     public List<String> getValues(ValueType type) {
-        List<String> list = new ArrayList<>(5);
-        
+        List<String> list = new ArrayList<>(5);  // will store the output list
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(
-                    QUERIES.get(type.name() + "s"));
+            		QUERIES.get(type.name() + "s"));  // executes the corresponding SQL statement
             
-            while (resultSet.next()) {
+            while (resultSet.next()) {  // loops through the result from the SQL statement
                 String column = type.name() + "Name";
-                list.add(resultSet.getString(column));
-                System.out.println(resultSet.getString(column));
+                list.add(resultSet.getString(column));  // add each item in the column to the list
+                System.out.println(resultSet.getString(column)); // prints each item to the console
             }
         } catch (SQLException e) {
             System.out.println("Error occured when reading database.");
             e.printStackTrace();
-        } finally {
+        } finally { // closing the connections and catching any exceptions
             try { resultSet.close(); } catch (Exception e) {}
             try { statement.close(); } catch (Exception e) {}
         }
-        
-        return list;
+        return list;  // returns a list of the type in the argument
     }
     
+    // Returns and prints a list of the artists that are in the provided genre
     public List<String> getArtistsInGenre(String genreName) {
-        List<String> list = new ArrayList<>(5);
-        
+        List<String> list = new ArrayList<>(5);  // stores the list of artists
         try {
             query = "SELECT artistName FROM Artist "
-                  + "WHERE genreID = (SELECT genreID FROM Genre "
-                                   + "WHERE genreName = ?);";
-            pStatement = connection.prepareStatement(query);
-            pStatement.setString(1, genreName);
-            resultSet = pStatement.executeQuery();
+                  + "WHERE genreID = (SELECT genreID FROM Genre "  // SQL statements to retrieve the 
+                                   + "WHERE genreName = ?);";  		// corresponding artist names
+            pStatement = connection.prepareStatement(query);  // prepare statement to be executed
+            pStatement.setString(1, genreName);  // provides the argument to the prepared statement
+            resultSet = pStatement.executeQuery(); 
             
-            while (resultSet.next()) {
-                list.add(resultSet.getString("artistName"));
-                System.out.println(resultSet.getString("artistName"));
+            while (resultSet.next()) {  // loops through the column of artists
+                list.add(resultSet.getString("artistName"));  // adds the artist to the list
+                System.out.println(resultSet.getString("artistName")); // prints artist to console
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,24 +99,26 @@ public class Menu implements Runnable {
             try { pStatement.close(); } catch (Exception e) {}
         }
         
-        return list;
+        return list;  // returns list of artists
     }
+    
+    // Returns and prints a list of albums that have the given genre and artist
     public List<String> getAlbumsByArtistInGenre(String genreName, String artistName) {
-    	List<String> list = new ArrayList<>(5);
+    	List<String> list = new ArrayList<>(5);  // stores the list of albums
         try {
             query = "SElECT albumName FROM Album "
                   + "WHERE  genreID = (SELECT genreID FROM Genre "
-                                    + "WHERE  genreName = ?) "
+                                    + "WHERE  genreName = ?) "     
                   + "  AND artistID = (SELECT artistID FROM Artist "
-                                    + "WHERE  artistName = ?);";
+                                    + "WHERE  artistName = ?);"; // SQL statement to retrieve albums
             pStatement = connection.prepareStatement(query);
             pStatement.setString(1, genreName);
             pStatement.setString(2, artistName);
             resultSet = pStatement.executeQuery();
             
-            while (resultSet.next()) {
-            	list.add(resultSet.getString("albumName"));
-                System.out.println(resultSet.getString("albumName"));
+            while (resultSet.next()) {  // loops through the albums 
+            	list.add(resultSet.getString("albumName"));  // adds them to the list
+                System.out.println(resultSet.getString("albumName"));  // prints to console
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,21 +126,23 @@ public class Menu implements Runnable {
             try { resultSet.close(); } catch (Exception e) {}
             try { pStatement.close(); } catch (Exception e) {}
         }
-        return list;
+        return list;  // returns the list of albums
     }
+    
+    // Returns and prints a list of songs that are in the provided album
     public List<String> getSongsInAlbumByArtistInGenre(String albumName) {
-    	List<String> list = new ArrayList<>(5);
+    	List<String> list = new ArrayList<>(5);  // stores the list of songs
         try {
             query = "SELECT songTitle FROM Songs "
                   + "WHERE  albumID = (SELECT albumID FROM Album "
-                                    + "WHERE  albumName = ?);";
+                                    + "WHERE  albumName = ?);";  // SQL statement to retrieve the songs
             pStatement = connection.prepareStatement(query);
             pStatement.setString(1, albumName);
             resultSet = pStatement.executeQuery();
             
-            while (resultSet.next()) {
-            	list.add(resultSet.getString("songTitle"));
-                System.out.println(resultSet.getString("songTitle"));
+            while (resultSet.next()) {  // loops through the songs
+            	list.add(resultSet.getString("songTitle"));  // adds the songs to the list
+                System.out.println(resultSet.getString("songTitle"));  // prints the songs to the console
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,9 +150,10 @@ public class Menu implements Runnable {
             try { resultSet.close(); } catch (Exception e) {}
             try { pStatement.close(); } catch (Exception e) {}
         }
-        return list;
+        return list;  // returns the list of songs
     }
     
+    // Closes the database connection
     public void closeConnection() {
         try {
             DatabaseSetup.closeConnection(connection);
@@ -157,110 +163,29 @@ public class Menu implements Runnable {
         }
     }
     
-    /*
-    public void getArtists(String genreName) {
-        try {
-            query = "SELECT genreID FROM Genre WHERE genreName = '" + genreName + "';";
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            genreID = resultSet.getInt("genreID");
-            printArtists(genreID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    private void printArtists(int genreID) {
-        
-        try {
-            query = "SELECT artistName FROM Artist WHERE genreID = " + genreID + ";";
-            resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
-                System.out.println(resultSet.getString("artistName"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getAlbums(String artistName) {
-        int artistID = 0;
-        try {
-            query = "SELECT artistID FROM Artist WHERE artistName = '" + artistName + "';";
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            artistID = resultSet.getInt("artistID");
-            printAlbums(artistID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    private void printAlbums(int artistID) {
-        try {
-            query = "SELECT albumName FROM Album "
-                    + "WHERE artistID = " + artistID 
-                    + " AND genreID = " + genreID + ";";
-            resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
-                System.out.println(resultSet.getString("albumName"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }    
-    }
-    
-    public void getSongs(String albumName) {
-        int albumID = 0;
-        try {
-            query = "SELECT albumID FROM Album WHERE albumName = '" + albumName + "';";
-            resultSet = statement.executeQuery(query);
-            resultSet.next();
-            albumID = resultSet.getInt("albumID");
-            printSongs(albumID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    private void printSongs(int albumID) {
-        try {
-            query = "SELECT songTitle FROM Songs WHERE albumID = " + albumID + ";";
-            resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
-                System.out.println(resultSet.getString("songTitle"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }    
-    }
-    */
+    // Takes in the song name and activates the song to be played
     public void activateSong(String song) throws SQLException, URISyntaxException {
-        /*
-    	if(!audioPlayer.load(song)) return false;
-        while(!audioPlayer.isCompleted()) {
-            // System.out.println(audioPlayer.getSongProgress()); // not necessary but can be useful for GUI
-            audioPlayer.menu();
-        }
-        return true;
-        */
-    	//MP3Player.launch(MP3Player.class, song);
-    	songName = song;
-    	if(AppRun) {
-    		Platform.runLater(() -> {
+    	songName = song;  // stores the song name to be processed by the MP3Player application 
+    	if(AppRun) {  // checks if the application was already running
+    		Platform.runLater(() -> {  // Allows the platform to run again when exiting
     			try {
-				MP3Player.loadNewMP3File(songName);
+				MP3Player.loadNewMP3File(songName);  // loads the new song to the application
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
     		});
     	}
     	else{
-    		AppRun = true;
-    		(new Thread(new Menu())).start();
+    		AppRun = true;  // signals that the application is running
+    		(new Thread(new Menu())).start(); // starts a new thread of the menu 
     	}
 
     }
-	@Override
+	
+    // Allows to run the platform multiple times
+    @Override
 	public void run() {
-		MP3Player.launch(MP3Player.class, songName);
+		MP3Player.launch(MP3Player.class, songName);  // launches the application with the song provided
 	}
  }
 
