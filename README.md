@@ -1,5 +1,5 @@
 # jTunes
-Software Design Lab—Final Project
+Software Design Lab—Final Project Group A.
 
 jTunes, a Java-based version of iTunes. Using SQL Database to store information on songs, and has built-in audio playback functionality.
 
