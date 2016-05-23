@@ -21,7 +21,7 @@ public class SearchResult extends JPanel {
     private Border innerBorder;
     private boolean last;
     private QueryResponse myResponse;
-    
+
     public SearchResult(ValueType type, String text)  {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(340, 50));
