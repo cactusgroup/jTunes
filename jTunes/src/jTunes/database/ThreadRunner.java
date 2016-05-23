@@ -4,7 +4,7 @@ import javafx.application.Application;
 
 // This class is a wrapper for our runnable thread for JavaFX Application.
 public class ThreadRunner implements Runnable{
-    private static String songName = ""; // Initalize string to hold our first song which we initialize our Application with
+    private static String songName = ""; // Initialize string to hold our first song which we initialize our Application with
     public ThreadRunner() {      
     }
     
@@ -15,7 +15,7 @@ public class ThreadRunner implements Runnable{
     }
 
     @Override
-    public void run() {
+    public void run() { // This is our new independent thread we launch
         Application.launch(MP3Player_GUI.class, songName); // Launches our application to play Mp3 files.
         
     }

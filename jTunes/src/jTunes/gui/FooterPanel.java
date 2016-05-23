@@ -18,6 +18,8 @@ import jTunes.database.MP3Player_GUI;
  */
 
 @SuppressWarnings("serial")
+// This class defines the lower half of our GUI, where the play buttons
+// and other functionalities are placed. 
 public class FooterPanel extends JPanel {
     
     private String currentSong = "[song title]";
@@ -45,7 +47,7 @@ public class FooterPanel extends JPanel {
                     30,
                     Color.LIGHT_GRAY,
                     insets);
-            PlayButton playButton = new PlayButton();
+            PlayButton playButton = new PlayButton(); // Making a new Playbutton
             CustomButton forwardButton = new CustomButton(
                     Resources.forwardIcon,
                     "\u00bb",

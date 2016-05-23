@@ -16,6 +16,8 @@ import jTunes.database.ValueType;
 import jTunes.SearchResultResponse;
 
 @SuppressWarnings("serial")
+// This is our SearchResult object which displays and holds the choices we are given on the
+// gui for what genre, artist, album, and song to pick from in the database.
 public class SearchResult extends JPanel {
     private Border outerBorder;
     private Border innerBorder;

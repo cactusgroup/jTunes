@@ -43,7 +43,7 @@ public class App {
     private static SearchResultPanel resultsPanel;           // search results
     private static FooterPanel footerPanel;                  // bottom bar 
     
-    private static boolean AppRun = false;              // JavaFX oddity
+    private static boolean AppRun = false;              // Boolean for signaling when JavaFX Application has been launched
     private static String songName = "";                // This is for sending song name to MP3Player    
     private static String AlbArt = "";                  // This is for sending albumname to find albumart
     private static Menu menu;                           // Database access
@@ -85,8 +85,8 @@ public class App {
         // Invoking Swing for GUI 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame f = new JFrame("jTunes " + VersionID); // Making a new JFrame with label 'jTunes + Version ID'
-                try {
+                JFrame f = new JFrame("jTunes " + VersionID); // Making a new JFrame with label 
+                try {                                        //'jTunes + Version ID'
                     f.add(generateUI());                // Calling generateUI to generate our User Interface
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -174,8 +174,8 @@ public class App {
         // Space for each query's results
         List<String> list = new ArrayList<>(15);
         
-        switch(type) { // This switch is used to select which menu function we take our values from and store them into a list.
-        case genre:
+        switch(type) { // This switch is used to select which menu
+        case genre:   // function we take our values from and store them into a list.
             System.out.println("----Query Genre----");
             // this will get all genres available
             list = menu.getValues(type);
@@ -259,8 +259,8 @@ public class App {
                 resultsPanel.setVisible(false); // Make the queries invisible so we can see album art.
                 
                 songName = response;  //Setting the response into songName for usage in MP3Player_GUI
-                if(AppRun) { // If the JavaFX Application is running, do NOT launch again. instead load files directly into it.
-                    try {
+                if(AppRun) { // If the JavaFX Application is running, do NOT launch again. 
+                    try {   // instead load files directly into it.
                         if(MP3Player_GUI.isPlaying()){ // If a song is playing while a new song was selected,
                         MP3Player_GUI.loadNewMP3File(songName); // load the new song and
                         MP3Player_GUI.play();  // have it immediately play.
@@ -282,8 +282,8 @@ public class App {
 
                 
                 System.out.println("----Song loaded----");
-                footerPanel.setCurrentSong(response); // Setting song name on footer so we can see what song we are playing.
-                
+                footerPanel.setCurrentSong(response); // Setting song name on footer so we can see
+                                                     // what song we are playing.
                 // This triggers the album art loader.
                 try {
                     bodyPanel.SetAlbumArt(AlbArt);

@@ -17,9 +17,9 @@ import jTunes.database.ValueType;
  * 
  */
 @SuppressWarnings("serial")
+//This class defines the upper part of our GUI. 
 public class HeaderPanel extends JPanel {
     private JLabel title;
-//    private boolean showingSearch = false;
     
     public HeaderPanel(String title) {
         this(title, 350);
