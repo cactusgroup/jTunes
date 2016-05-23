@@ -13,26 +13,32 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class BodyPanel extends JPanel {
-    private static JLabel picLabel;
-    private boolean imgSet = false;
+    private static JLabel picLabel; // pic label for album art container in JLabel.
+    private boolean imgSet = false; // Boolean for label instantiation and setting.
     public BodyPanel() {
         setPreferredSize(new Dimension(350, 500));
     }
     
     public void SetAlbumArt(String albumart) throws IOException{
-        BufferedImage myPicture;
-        try{myPicture = ImageIO.read(new File("src/resources/imgs/"+albumart+".jpg"));}
-        catch(Exception e){
-        myPicture = ImageIO.read(getClass().getResource("/resources/imgs/" + albumart + ".jpg"));}
+        BufferedImage myPicture; // BufferedImage object to hold our picture
         
-        if(!imgSet){
-            picLabel = new JLabel(new ImageIcon(myPicture));
-            imgSet = true;
+        
+        try{ // Lets try to load from the relative path in our Eclipse project
+            myPicture = ImageIO.read(new File("src/resources/imgs/"+albumart+".jpg"));
+            }
+        
+        catch(Exception e){ //Otherwise, read from relative path in .jar.
+            myPicture = ImageIO.read(getClass().getResource("/resources/imgs/" + albumart + ".jpg"));
+            }
+        
+        if(!imgSet){ // If the image JLabel wasn't already set
+            picLabel = new JLabel(new ImageIcon(myPicture)); // New JLabel and picture
+            imgSet = true;      // Set so it won't come here again next time
         }
-        else{
-            picLabel.setIcon(new ImageIcon(myPicture));
+        else{ // Otherwise, 
+            picLabel.setIcon(new ImageIcon(myPicture)); // set the current Icon source to be new picture source.
         }
-        add(picLabel,BorderLayout.CENTER);            
+        add(picLabel,BorderLayout.CENTER);   // Render the picture to be centered.         
     }
     
 }

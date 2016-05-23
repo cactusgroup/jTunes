@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.*;
 import jTunes.Resources;
-import jTunes.database.AudioPlayer;
 import jTunes.database.MP3Player_GUI;
 
 /* 50 px high
@@ -20,7 +19,6 @@ import jTunes.database.MP3Player_GUI;
 
 @SuppressWarnings("serial")
 public class FooterPanel extends JPanel {
-    private static volatile MP3Player_GUI myPlayer;
     
     private String currentSong = "[song title]";
     private JLabel message;
@@ -65,7 +63,7 @@ public class FooterPanel extends JPanel {
             playButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    playButton.toggle(myPlayer);
+                    playButton.toggle();
                 }
             });
             forwardButton.addMouseListener(new MouseAdapter() {
@@ -89,7 +87,4 @@ public class FooterPanel extends JPanel {
         message.setText("Playing: " + currentSong);
     }
     
-    public void setPlayer(MP3Player_GUI player) {
-        myPlayer = player;
-    }
 }
