@@ -19,8 +19,6 @@ import javax.swing.JPanel;              // interior panel
 import javax.swing.SwingUtilities;      // 
 
 import jTunes.gui.*;
-import javafx.application.Application;
-import javafx.application.Platform;
 import jTunes.database.*;
 
 /**
@@ -41,8 +39,15 @@ public class App {
             new Dimension(350, 600);                    // App window dimensions
     
     private static HeaderPanel headerPanel;                  // top bar    
-    private static BodyPanel bodyPanel;                      // middle are
+    private static BodyPanel bodyPanel;                      // middle area
+    private static SearchResultPanel resultsPanel;           // search results
     private static FooterPanel footerPanel;                  // bottom bar 
+    
+    //    private static boolean AppRun = false;              // JavaFX oddity
+    //    private static String songName = "";
+    //    private static String AlbArt = "";
+    //    private static Menu menu;                           // Database access
+    //    private static volatile MP3Player_GUI player_GUI;   // music player
     
     private static boolean AppRun = false;
     private static SearchResultPanel resultsPanel;           // search results
@@ -118,12 +123,18 @@ public class App {
                 
                 f.setVisible(true); // Make our elements visible.
                 
+                /* call our database query method
+                 * to start things off */
                 query(ValueType.genre);  // Set up the query for Genre.
             }
         });
        
-        
         // Shutdown hook to make sure all elements and connections are properly closed before shutdown.
+        // main shutdown code:
+        // - closes our database connection
+        // - stops our audio player
+        // - joins threads that we spawned
+        final Thread mainThread = Thread.currentThread();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             final Thread mainThread = Thread.currentThread();  // Saving main thread for shutdown
             public void run() {
@@ -141,6 +152,7 @@ public class App {
             }
         });
     }
+
     // Function that sets the title to string t. 
     public static void setTitle(String t) {
         headerPanel.setTitle(t);
@@ -149,38 +161,70 @@ public class App {
     public static void query(ValueType type, String... constraints) {
         resultsPanel.clearSearchResults(); // Clearing the list of search results
         resultsPanel.setVisible(true);  // Setting this to be visible (over the albumart)
+    
+//    /* Lets the user know if the options presented
+//     * are genres or artists or albums or songs
+//     */
+//    public static void setTitle(String t) {
+//        headerPanel.setTitle(t);
+//    }
+//    
+//    /* This method asks the database for everything in turn.
+//     * First genres (call from invokeLater()), then artists,
+//     * then albums, and finally songs. */
+//    // ooh, varargs -------------------------------\/
+//    public static void query(ValueType type, String... constraints) {
+//        // clear any previous results
+//        resultsPanel.clearSearchResults();
+//        /* re-show the results panel
+//         * if restarting from the song screen. */
+//        resultsPanel.setVisible(true);
         
+        // Space for each query's results
         List<String> list = new ArrayList<>(15);
         
         switch(type) { // This switch is used to select which menu function we take our values from and store them into a list.
         case genre:
             System.out.println("----Query Genre----");
+            // this will get all genres available
             list = menu.getValues(type);
             break;
         case artist:
             System.out.println("----Query Artist----");
+            // this will get all artists in selected genre
             list = menu.getArtistsInGenre(constraints[0]);
-            break;
+                                        /* ^ look weird?
+                                         * constraints[0] will always be genre
+                                         * constraints[1] will always be artist*/
+            break;                                         
         case album:
             System.out.println("----Query Albums----");
+            // all albums by the selected artist in the selected genre
             list = menu.getAlbumsByArtistInGenre(constraints[0], constraints[1]);
             break;
         case song:
             System.out.println("----Query Songs----");
+            // all songs in selected album in the selected genre
             list = menu.getSongsInAlbumByArtistInGenre(constraints[0]);
             break;
         }
+
         // Adding the list of entries from menu into searchResults.
+        /* create our search results from the database values
+         * AND the type queried for. */
         List<SearchResult> searchResults = new ArrayList<>(15);
         for (String s : list) {
             searchResults.add(new SearchResult(type, s));
         }
         
-        // add the search results we've gotten
-        // with callback at the ready
+        /* add to our GUI the search results we've gotten
+         * with callback at the ready */
         resultsPanel.addSearchResults(searchResults, new QueryResponse() {
+            /* In overview, this doozy tells our App which of our
+             * search results was clicked. */ 
             public void respond(String response) {
-                ValueType prev = type;
+                // previous type queried and associated constraints
+                ValueType prev = type; // captured by Java 8's closure mechanism
                 String[] prevConstraints =
                         Arrays.copyOf(constraints, constraints.length);
                 
@@ -191,26 +235,32 @@ public class App {
                     case 0:
                         // will respond with genre choice
                         System.out.println("----Genre selected----");
-                        query(prev.next(), response);
+                        
+                        // this queries our db for the next level of choices
+                        query(prev.next(), response); // response = genre
                         headerPanel.setTitle("Artists");
                         break;
                     case 1:
                         // will respond with artist choice (genre choice saved)
                         System.out.println("----Artist selected----");
                         query(prev.next(), prevConstraints[0], response);
+                        // ^^ response = artist
                         headerPanel.setTitle("Albums");
                         break;
                     case 2:
                         // will respond with album choice
                         System.out.println("----Album selected----");
-                        query(prev.next(), response);
+                        query(prev.next(), response); // response = album
                         AlbArt = response;
                         headerPanel.setTitle("Songs");
                         break;
-                    }
+                    /* no case 3 because a response of song choice does not
+                     * require another query.
+                     * See below. */
+                    } // end switch (type)
                     
                     return;
-                }
+                } // end if (prev.next() != prev)
                 
                 // will respond with song choice
                 // (this is the base case)
@@ -222,12 +272,14 @@ public class App {
                     try {
                         if(MP3Player_GUI.isPlaying()){ // If a song is playing while a new song was selected,
                         MP3Player_GUI.loadNewMP3File(songName); // load the new song and
-                        MP3Player_GUI.play();  // have it immediately play. 
+                        MP3Player_GUI.play();  // have it immediately play.
                         }
                         else{ // Otherwise
                             MP3Player_GUI.loadNewMP3File(songName); // Just load the new song. 
                         }
                     } catch (URISyntaxException e) {
+                        System.out.println("** Could not load mp3 file.");
+                        System.out.println("   File string syntax error.");
                         e.printStackTrace();
                     }
                 }
@@ -245,6 +297,7 @@ public class App {
                 try {
                     bodyPanel.SetAlbumArt(AlbArt);
                 } catch (IOException e) {
+                    System.out.println("** Could not load album art.");
                     e.printStackTrace();
                 }
             }

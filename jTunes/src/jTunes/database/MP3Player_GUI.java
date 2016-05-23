@@ -3,15 +3,12 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MP3Player_GUI extends Application {
-        
         private final static Duration a = new Duration(5000); // 5 seconds used to forward and back 5 seconds
         private static MediaPlayer mediaPlayer; // Static so that we can access it in all our static functions.
         
@@ -64,7 +61,7 @@ public class MP3Player_GUI extends Application {
         // Goes back to the beginning of the song.
         public static void backtoBeginning() {
             mediaPlayer.stop();
-            mediaPlayer.play();  
+            mediaPlayer.play();
         }   
         // Boolean that will return if the song playback is completed.
         public static boolean isCompleted(){
