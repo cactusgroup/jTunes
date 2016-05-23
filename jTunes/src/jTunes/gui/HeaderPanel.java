@@ -58,6 +58,6 @@ public class HeaderPanel extends JPanel {
     }
     
     public void setTitle(String t) {
-        title.setText(t);
+        title.setText(t); // Sets the title for the GUI.
     }
 }

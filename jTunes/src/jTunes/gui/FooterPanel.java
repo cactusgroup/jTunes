@@ -21,7 +21,7 @@ import jTunes.database.MP3Player_GUI;
 public class FooterPanel extends JPanel {
     
     private String currentSong = "[song title]";
-    private JLabel message;
+    private JLabel message; 
     
     public FooterPanel(String currentSong) {
         this(currentSong, 350);
@@ -83,7 +83,7 @@ public class FooterPanel extends JPanel {
     }
     
     public void setCurrentSong(String cS) {
-        currentSong = cS;
+        currentSong = cS; // Displays on the GUI the current song.
         message.setText("Playing: " + currentSong);
     }
     
