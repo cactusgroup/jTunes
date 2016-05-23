@@ -1,6 +1,6 @@
 package jTunes.gui;
 
-import jTunes.QueryResponse;
+import jTunes.SearchResultResponse;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,7 +41,7 @@ public class SearchResultPanel extends JPanel {
     
     // Function to add the search results from the Menu class, which gets them from the SQL server.
     public void addSearchResults(List<SearchResult> searchResults,
-                                 QueryResponse response) {
+                                 SearchResultResponse response) {
         // dynamic resizing of resultsPane to accommodate all search results
         Dimension d = resultsPane.getPreferredSize();
         d.setSize((int)d.getWidth(), searchResults.size() * 50);

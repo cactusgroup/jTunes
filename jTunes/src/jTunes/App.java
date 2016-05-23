@@ -210,7 +210,7 @@ public class App {
         
         /* add to our GUI the search results we've gotten
          * with callback at the ready */
-        resultsPanel.addSearchResults(searchResults, new QueryResponse() {
+        resultsPanel.addSearchResults(searchResults, new SearchResultResponse() {
             /* In overview, this doozy tells our App which of our
              * search results was clicked. */ 
             public void respond(String response) {

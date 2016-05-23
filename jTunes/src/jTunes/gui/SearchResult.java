@@ -13,14 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import jTunes.database.ValueType;
-import jTunes.QueryResponse;
+import jTunes.SearchResultResponse;
 
 @SuppressWarnings("serial")
 public class SearchResult extends JPanel {
     private Border outerBorder;
     private Border innerBorder;
     private boolean last;
-    private QueryResponse myResponse;
+    private SearchResultResponse myResponse;
 
     public SearchResult(ValueType type, String text)  {
         setLayout(new BorderLayout());
@@ -88,7 +88,7 @@ public class SearchResult extends JPanel {
         setLast(this.last);
     }
     
-    public void setResponse(QueryResponse response) {
+    public void setResponse(SearchResultResponse response) {
         myResponse = response;
     }
 }
