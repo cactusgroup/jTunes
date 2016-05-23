@@ -1,5 +1,4 @@
 package jTunes.database;
-import java.io.File;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -103,7 +102,7 @@ public class MenuTest {
         			exitBool = true;
         			break; // breaks out of the song loop if input is "quit"
         		}
-        		if(new File("src/mp3tracks/" + input + ".mp3").exists()) {  // checks if an mp3 file of the song name exists
+        		if(MenuTest.class.getResource("/mp3tracks/" + input + ".mp3") != null) { // checks if an mp3 file of the song name exists
         			menu.activateSong(input);
         			break;  // breaks out of the song loop if the file exists
         		}
@@ -113,7 +112,8 @@ public class MenuTest {
         			System.out.println(underline);
         			menu.getSongsInAlbumByArtistInGenre(savedInput);  // prints the songs list again if input is incorrect
         			continue;  // continues with the song loop
-        		}	
+        		
+        		}
         	}   // end of song loop   	
         }  // end of application
         
