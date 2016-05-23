@@ -51,17 +51,23 @@ public class SearchResult extends JPanel {
         addMouseListener(new MouseAdapter() {
             private SearchResult s = SearchResult.this;
             public void mousePressed(MouseEvent e) {
+                // button down style
                 s.setBackground(ColorConstants.LIGHT_MINT);
                 s.setInnerBorder(ColorConstants.LIGHT_MINT);
             }
             public void mouseReleased(MouseEvent e) {
+                // button up style
                 s.setBackground(Color.WHITE);
                 s.setInnerBorder(Color.WHITE);
+                
+                // also, register with App that "I was clicked!"
                 myResponse.respond(text);
             }
         });
     }
     
+    
+    // sets this search result as the last in the list
     public void setLast(boolean last) {
         this.last = last;
         
