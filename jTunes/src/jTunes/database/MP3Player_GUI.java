@@ -65,7 +65,7 @@ public class MP3Player_GUI extends Application {
             mediaPlayer.play();  
     }
         public static boolean isCompleted(){
-            if(mediaPlayer.getCurrentTime() == mediaPlayer.getStopTime()){
+            if(mediaPlayer.getCurrentTime().toString().equals(mediaPlayer.getStopTime().toString())){
                 return true;
             }
             return false;
