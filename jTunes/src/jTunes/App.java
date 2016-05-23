@@ -43,17 +43,10 @@ public class App {
     private static SearchResultPanel resultsPanel;           // search results
     private static FooterPanel footerPanel;                  // bottom bar 
     
-    //    private static boolean AppRun = false;              // JavaFX oddity
-    //    private static String songName = "";
-    //    private static String AlbArt = "";
-    //    private static Menu menu;                           // Database access
-    //    private static volatile MP3Player_GUI player_GUI;   // music player
-    
-    private static boolean AppRun = false;
-    private static SearchResultPanel resultsPanel;           // search results
-    private static String songName = "";        // This is for sending song name to MP3Player
-    private static String AlbArt = "";          // This is for sending albumname to find albumart.
-    private static Menu menu;                   // Menu object, for MySQL database connection and song searching
+    private static boolean AppRun = false;              // JavaFX oddity
+    private static String songName = "";                // This is for sending song name to MP3Player    
+    private static String AlbArt = "";                  // This is for sending albumname to find albumart
+    private static Menu menu;                           // Database access
    
     // This function sets up our UI and returns a JPanel with all elements initialized.
     public static JPanel generateUI() throws IOException {
@@ -70,8 +63,7 @@ public class App {
         // initialize our structure panels
         headerPanel = new HeaderPanel("Genres");  // Initializing header panel with "Genres"          
         bodyPanel = new BodyPanel();                
-        footerPanel = new FooterPanel("");  // This initalizes FooterPanel text to be empty. Playing:
-        // the FooterPanel gets a Player to itself
+        footerPanel = new FooterPanel("");  // This initializes FooterPanel text to be empty. (Playing: "")
         
         // initialize our content panels
         resultsPanel = new SearchResultPanel();
@@ -133,17 +125,16 @@ public class App {
         // main shutdown code:
         // - closes our database connection
         // - stops our audio player
-        // - joins threads that we spawned
-        final Thread mainThread = Thread.currentThread();
+        // - joins any threads that we spawned
+        final Thread mainThread = Thread.currentThread(); // Saving main thread for shutdown
         Runtime.getRuntime().addShutdownHook(new Thread() {
-            final Thread mainThread = Thread.currentThread();  // Saving main thread for shutdown
             public void run() {
                 try {
                     menu.closeConnection();
                     MP3Player_GUI.close();
                     System.out.println("Resources closed.");
-                    mainThread.join();
                     System.out.println("Shutting down.");
+                    mainThread.join();
                 } catch (InterruptedException e) {
                     System.out.println("We couldn't join our threads.");
                     System.out.println("We were interrupted.");
@@ -157,7 +148,7 @@ public class App {
     public static void setTitle(String t) {
         headerPanel.setTitle(t);
     }
-    // Function for querys. This will be the GUI version of song searching.
+    // Function for queries. This will be the GUI version of song searching.
     public static void query(ValueType type, String... constraints) {
         resultsPanel.clearSearchResults(); // Clearing the list of search results
         resultsPanel.setVisible(true);  // Setting this to be visible (over the albumart)
